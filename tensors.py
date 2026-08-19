@@ -178,8 +178,9 @@ x.reshape(3,2)
 # -----------------------------------------------------------------------------------
 
 x = torch.tensor([1, 2, 3, 4, 5, 6])
-x.reshape(2,-1)
-
+y =x.reshape(2,-1)
+# This doesn't modify x in place. It returns a new reshaped tensor.
+print(y)
 #  yo -1 ko kura k ho bhanda 
 # PyTorch figures out the missing dimension.
 
@@ -192,7 +193,6 @@ x.reshape(2,-1)
 
 # So:
 # (2, -1)
-
 # becomes:
 # (2, 3)
 
