@@ -1,9 +1,9 @@
 import torch 
 x= torch.tensor(2.0,requires_grad=True)
 y = x ** 2
-# print(y.backward())
-# print(x.grad)
-print(y)
+y.backward()
+print(x.grad)
+
 
 # A gradient tells us the direction and amount a value needs to change to affect the output.
 
