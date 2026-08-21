@@ -1,0 +1,46 @@
+                    PYTORCH
+                       │
+        ┌──────────────┴──────────────┐
+        │                             │
+      DATA                           MODEL
+        │                             │
+   Dataset                        nn.Module
+        │                             │
+   DataLoader                    nn.Linear
+        │                        LayerNorm
+        │                        Dropout
+        │                        ReLU
+        │                             │
+        └──────────────┬──────────────┘
+                       ↓
+                 TRAINING LOOP
+                       │
+                 model.train()
+                       ↓
+                    forward
+                       ↓
+                     loss
+                       ↓
+                 zero_grad()
+                       ↓
+                  backward()
+                       ↓
+               gradient clipping
+                       ↓
+                optimizer.step()
+                       ↓
+                scheduler.step()
+                       │
+                       ↓
+                  VALIDATION
+                       │
+                  model.eval()
+                       ↓
+                torch.no_grad()
+                       ↓
+                    metrics
+                       │
+                       ↓
+                 SAVE MODEL
+                       │
+                 state_dict()
