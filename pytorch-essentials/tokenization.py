@@ -60,5 +60,27 @@ output = model(tokens)
                         #    ↓
                         # updated embeddings
 
+# =====================================================================================
+# B T C 
+# I Love Playing Cricket 
+# after tokenization -->  ["I", "Love","Playing","Cricket"]
+# so we have 4 tokens
 
-                        
+# -------------------------------------------------------------------------------------
+
+# B --> Batch
+# T --> Time / Sequence Length
+# C = Channels / Embedding Dimensions
+# think it as:
+# How many sentences? we are processing at the same time
+# How many tokens per sentence?
+# How many numbers represent each token?
+
+# -------------------------------------------------------------------------------------
+#  "i love playing cricket" 
+# 1 sentence (B), 4 token in this sentence(T), 8 dimensions for each of the words(C) --> (1,4,8)
+#  if 3 sentence B = 3 , token must be equal if sentence 1 token 3 sentence 2 and 3 token must be same , each token embeddings -> 8 so --> (B ,T ,C)  --> (4,3,8)
+
+
+
+
