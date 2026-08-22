@@ -25,3 +25,40 @@ print(output,output.shape)
 # means each token gets a vector of 4 number 
 
 
+class TinyModel(nn.Module):
+
+    def __init__(self):
+
+        super().__init__()
+
+        self.embedding = nn.Embedding(10, 4)
+
+    def forward(self, x):
+
+        return self.embedding(x)
+
+model = TinyModel()
+
+tokens = torch.tensor([1, 3, 5])
+
+output = model(tokens)
+
+
+                        # embedding
+                        #    ↓
+                        # Transformer
+                        #    ↓
+                        # prediction
+                        #    ↓
+                        # loss
+                        #    ↓
+                        # backward()
+                        #    ↓
+                        # embedding gradients
+                        #    ↓
+                        # optimizer.step()
+                        #    ↓
+                        # updated embeddings
+
+
+                        
