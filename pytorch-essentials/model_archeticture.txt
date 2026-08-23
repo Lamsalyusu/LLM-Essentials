@@ -44,3 +44,49 @@
                  SAVE MODEL
                        │
                  state_dict()
+
+============================================================================================================================================================
+============================================================================================================================================================
+
+                  TEXT
+                   ↓
+              TOKENIZER
+                   ↓
+              TOKEN IDs
+                   ↓
+             TOKEN EMBEDDING
+                   ↓
+          POSITION INFORMATION
+                   ↓
+          ┌──────────────────┐
+          │ Transformer      │
+          │                  │
+          │ LayerNorm        │
+          │      ↓           │
+          │ Causal           │
+          │ Self-Attention   │
+          │      ↓           │
+          │ Residual         │
+          │      ↓           │
+          │ LayerNorm        │
+          │      ↓           │
+          │ Feed Forward     │
+          │      ↓           │
+          │ Residual         │
+          └──────────────────┘
+                   ↓
+            Repeat N times
+                   ↓
+             Language Head
+                   ↓
+                 Logits
+                   ↓
+               Softmax
+                   ↓
+          Next-token probability
+                   ↓
+             Select token
+                   ↓
+              Next token
+                   ↓
+                Repeat
