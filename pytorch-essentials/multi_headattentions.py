@@ -145,3 +145,20 @@ class MultiHeadAttention(nn.Module):
         output = self.projection(output)
 
         return output
+
+
+x = torch.randn(
+    2,
+    4,
+    8
+)
+
+attention = MultiHeadAttention(
+    embed_dim=8,
+    num_heads=2
+)
+
+output = attention(x)
+
+print(x.shape)
+print(output.shape)
