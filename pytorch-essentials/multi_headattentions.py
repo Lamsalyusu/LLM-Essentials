@@ -220,6 +220,56 @@
 
 # This makes the attention matrix multiplication convenient.
 
+# ==========================================================================================
+# | Attention             | Q comes from  | K/V come from    | Typical use                 |
+# | --------------------- | ------------- | ---------------- | --------------------------- |
+# | Self-attention        | Same sequence | Same sequence    | Understanding relationships |
+# | Causal self-attention | Same sequence | Same sequence    | GPT / text generation       |
+# | Cross-attention       | One sequence  | Another sequence | Encoder-decoder models      |
+# ==========================================================================================
+
+
+        #           INPUT
+        #             │
+        #             ↓
+        #      Token Embeddings
+        #             │
+        #             ↓
+        #           X
+        #             │
+        #   ┌─────────┼─────────┐
+        #   ↓         ↓         ↓
+        #  Q          K         V
+        #   │         │         │
+        #   └────┬────┘         │
+        #        ↓              │
+        #       QKᵀ             │
+        #        ↓              │
+        #   Scale by √dₖ        │
+        #        ↓              │
+        #   Apply mask          │
+        #        ↓              │
+        #      Softmax          │
+        #        ↓              │
+        # Attention weights     │
+        #        │              │
+        #        └──────┬───────┘
+        #               ↓
+        #              × V
+        #               ↓
+        #         Attention output
+        #               │
+        #               ↓
+        #       Multiple heads
+        #               │
+        #               ↓
+        #         Concatenate
+        #               │
+        #               ↓
+        #         Projection
+
+
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
