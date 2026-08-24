@@ -1,0 +1,169 @@
+    Pipeline is a high level API that lets you use a pre trained model for a specific task with vey little code:
+    Think of it as 
+
+    Your text
+    ↓
+    pipeline()
+    ↓
+    Tokenizer
+    ↓
+    Model
+    ↓
+    Post-processing
+    ↓
+    Result
+
+    Instead of manually doing all of these steps, pipeline() does them for you.
+
+=========================================================================================
+
+    We didnot explicitly write 
+    tokenizer
+    model
+    input_ids
+    attention_mask
+    forward()
+    softmax
+    post-processing
+
+==========================================================================================
+
+when we write 
+classifier - pipeline("sentiment-analysis)
+
+hugging face roughly does:
+
+                  pipeline
+                     │
+          ┌──────────┴──────────┐
+          ↓                     ↓
+      Tokenizer               Model
+          │                     │
+          └──────────┬──────────┘
+                     ↓
+                  Output
+                     ↓
+               Post-process
+
+============================================================================================
+
+Why is it called a pipeline?
+Because there are multiple processing stages:
+
+Input
+ ↓
+Preprocessing
+ ↓
+Model
+ ↓
+Postprocessing
+ ↓
+Output
+
+============================================================================================
+Different Pipelines Tasks
+
+Hugging Face supports many tasks.
+-----------------------------------------------------------
+Sentiment analysis
+pipeline("sentiment-analysis")
+------------------------------------------------------------
+Text classification
+pipeline("text-classification")
+------------------------------------------------------------
+Text generation
+pipeline("text-generation")
+------------------------------------------------------------
+Question answering
+pipeline("question-answering")
+------------------------------------------------------------
+Summarization
+pipeline("summarization")
+------------------------------------------------------------
+Translation
+pipeline("translation")
+------------------------------------------------------------
+Named Entity Recognition
+pipeline("ner")
+------------------------------------------------------------
+Zero-shot classification
+pipeline("zero-shot-classification")
+------------------------------------------------------------
+There are also pipelines for speech, vision, image classification, object detection, etc.
+
+============================================================================================
+This is Text generation part 
+
+from transformers import pipeline
+
+generator = pipeline("text-generation")
+result = generator(
+    "Artificial intelligence is",
+    max_new_tokens=50
+)
+print(result)
+
+YOU CAN SPECIFY A MODEL ALSO 
+
+generator = pipeline(
+    "text-generation",
+    model="gpt2"
+)
+
+pipeline
+   ↓
+GPT-2 tokenizer
+   +
+GPT-2 model
+
+===========================================================================================
+    
+    "Artificial intelligence is"
+                ↓
+            tokenizer
+                ↓
+            token IDs
+                ↓
+        Transformer
+                ↓
+            logits
+                ↓
+        choose next token
+                ↓
+        next token
+                ↓
+        choose next token
+                ↓
+               ...
+
+This is autoregressive generation
+
+==============================================================================================
+What is inside a pipeline:
+
+                 pipeline()
+                     │
+                     ↓
+              PREPROCESSING
+                     │
+                     ↓
+                Tokenizer
+                     │
+                     ↓
+               input_ids
+               attention_mask
+                     │
+                     ↓
+                  MODEL
+                     │
+                     ↓
+                 logits
+                     │
+                     ↓
+              POSTPROCESSING
+                     │
+                     ↓
+                  result
+==============================================================================================
+
+DONT BECOME DEPENDENT ON pipeline() function this is just for inference 
