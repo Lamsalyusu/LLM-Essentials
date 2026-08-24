@@ -269,6 +269,86 @@
         #         Projection
 
 
+# =============================================================================================================================================
+# FFN --> Feed Forward Network 
+# Input -> LInear --> Activation --> LInear --> Output 
+
+# self.nn = nn.seqential(
+# nn.Linear(768,3072),
+# nn.GELU(),
+# nn.Linear(768,3072)
+# )
+
+# 768 --> 3072 --> 768
+# Hidden Dimensionality temporarily expands
+
+# ==============================================================================================================================================
+
+# Residual Connection 
+# Instead of 
+# x --> attention --> output 
+# we do someting like:
+# x--------------------|
+# x --> attention -->  + ---> output
+
+# Mathematically 
+# output = x + attention(x)
+# output = x +FFN(x)
+# Residual connection makes it much easier to train deep netwoeks and preserve into gradient/flows.
+
+# ===============================================================================================================================================
+
+# Transformer needs normalzation to keep activation well behaved  
+# cLASSIC tRANSFORMER 
+
+# Layer Norm 
+# --> Modern LLMs use frequently 
+# RMS Norm 
+# --> Norm helps to stabilize tht networks activation and Training
+
+# POST NORM 
+# Attention --> Add Residual --> Norm 
+
+# PRE NORM 
+# Norm --> Attention --> Add Residual 
+
+# modern LLM USE PRE-NORM STYLE DESIGN 
+
+# ================================================================================================================================================
+
+# CASUAL LANGUAGE MODELLING (CLM)
+# -->Given previous token , predict the next token. This is called (CLM).
+
+# ================================================================================================================================================
+
+# KV Cache
+# without KV caching previous K/V information can be unnecessarily receomputed 
+# KV cache stores previously calculated key/value states to make auto regressiive generation faster.abs
+
+# Fine Tuining
+    # |
+    # |----> Full fine tuining
+    # |
+    # |---> PEFT
+    # |      | --> LoRA
+    # |      | --> Other Methods 
+
+# ================================================================================================================================================
+
+# Evaluation can involve
+# --> is mu model good 
+# --> Task specific metric 
+# --> BenchMark Datasets
+# --> Human evaluation 
+# --> LLM  as a judge 
+
+# Classififcation -->Accuracy /F1
+# Translation --> BLEU/COMET 
+# Summarization -->  ROVGE and Others 
+# Language Modelling --> Perplexity 
+# Generation --> task specific evaluation 
+
+# ==================================================================================================================================================
 
 import torch
 import torch.nn as nn
