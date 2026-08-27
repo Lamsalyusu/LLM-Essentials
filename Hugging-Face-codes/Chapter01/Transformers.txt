@@ -167,3 +167,41 @@ What is inside a pipeline:
 ==============================================================================================
 
 DONT BECOME DEPENDENT ON pipeline() function this is just for inference 
+
+==============================================================================================
+
+How does a Transformer work?
+
+The simplest way to think about a Transformer is:
+
+A Transformer takes tokens, repeatedly lets them look at each other using attention, processes the information with FFNs, and finally predicts something.
+
+"I love playing cricket"
+          ↓
+      Tokenizer
+          ↓
+   Token IDs
+          ↓
+    Embeddings
+          ↓
+ Positional information
+          ↓
+ ┌─────────────────────┐
+ │ Transformer Block 1 │
+ ├─────────────────────┤
+ │ Transformer Block 2 │
+ ├─────────────────────┤
+ │ Transformer Block 3 │
+ ├─────────────────────┤
+ │         ...         │
+ ├─────────────────────┤
+ │ Transformer Block N │
+ └─────────────────────┘
+          ↓
+      Final Norm
+          ↓
+       LM Head
+          ↓
+        Logits
+          ↓
+   Next-token prediction
