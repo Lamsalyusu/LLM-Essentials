@@ -228,5 +228,18 @@ Transformer
     │     └── ...
     │
     └── Block N
-    
+
 ===============================================================================================================================================================
+some of the transformer models
+
+GPT ,BERT , INSTRUCTGPT, T5
+
+some of the language models that are trained are:
+1.Masked Language Modelling (MLM)
+--> this approach randomly masks some tokens in the input and trains the model to predict the original tokens based on the surrounding context. 
+This allows the model to learn bidirectional context (looking at words both before and after the masked word)
+
+2.Casual Language Modelling (CLM)
+--> this approach predicts the next token based on all previous tokens in the sequence. 
+The model can only use context from the left (previous tokens) to predict the next token.
+
