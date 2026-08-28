@@ -205,3 +205,28 @@ A Transformer takes tokens, repeatedly lets them look at each other using attent
         Logits
           ↓
    Next-token prediction
+
+A Transformer is an architecture made by stacking Transformer blocks, 
+and each block contains attention, FFN, normalization, and residual connections.
+
+
+Transformer
+    │
+    ├── Block 1
+    │     ├── Attention
+    │     ├── FFN
+    │     ├── Norm
+    │     └── Residuals
+    │
+    ├── Block 2
+    │     ├── Attention
+    │     ├── FFN
+    │     ├── Norm
+    │     └── Residuals
+    │
+    ├── Block 3
+    │     └── ...
+    │
+    └── Block N
+    
+===============================================================================================================================================================
