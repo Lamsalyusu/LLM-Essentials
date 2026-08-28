@@ -254,3 +254,47 @@ In the Transformers library, language models generally fall into three architect
 2.Decoder-only models (like GPT, Llama): These models process text from left to right and are particularly good at text generation tasks. They can complete sentences, write essays, or even generate code based on a prompt.
 
 2.Encoder-decoder models (like T5, BART): These models combine both approaches, using an encoder to understand the input and a decoder to generate output. They excel at sequence-to-sequence tasks like translation, summarization, and question answering.
+
+==================================================================================================================================================================
+
+transformer image how does it works
+
+Using “I love cricket” → French:
+
+"I love cricket"
+      ↓
+   Encoder
+      ↓
+Contextual representations
+      ↓
+   Decoder
+
+Then the decoder works step by step:
+
+Step 1:
+<START>
+  ↓
+Masked Self-Attention
+  ↓
+Cross-Attention → looks at Encoder output
+  ↓
+Predicts "J'"
+
+Step 2:
+<START> J'
+       ↓
+Masked Self-Attention
+       ↓
+Cross-Attention → looks at Encoder output
+       ↓
+Predicts "aime"
+
+Step 3:
+<START> J' aime
+       ↓
+Masked Self-Attention
+       ↓
+Cross-Attention → looks at Encoder output
+       ↓
+Predicts "le"
+============================================================================================================================================================
