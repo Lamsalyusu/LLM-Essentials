@@ -310,3 +310,35 @@ The complexity of the input and desired output
 in ideal world we can feed unlimited context to the model but hardware constraints and computational costs makes this impractical.
 
 The context length is the maximum number of tokens the model can consider at once when generating a response.
+
+==============================================================================================================================================================
+
+The Art Of Prompting::::::::
+When we pass information to LLMs, we structure our input in a way that guides the generation of the LLM toward the desired output. This is called prompting.
+Since the model’s primary task is to predict the next token by analyzing the importance of each input token, the wording of your input sequence becomes crucial.
+
+===============================================================================================================================================================
+
+The Two-Phase Inference Process
+let’s dive into how LLMs actually generate text. The process can be broken down into two main phases: prefill and decode
+
+1.Prefill phase
+
+Tokenization: Converting the input text into tokens (think of these as the basic building blocks the model understands)
+
+Embedding Conversion: Transforming these tokens into numerical representations that capture their meaning
+
+Initial Processing: Running these embeddings through the model’s neural networks to create a rich understanding of the context
+
+2.Decode Phase
+
+Attention Computation: Looking back at all previous tokens to understand context
+
+Probability Calculation: Determining the likelihood of each possible next token
+
+Token Selection: Choosing the next token based on these probabilities
+
+Continuation Check: Deciding whether to continue or stop generation
+
+This phase is memory-intensive because the model needs to keep track of all previously generated tokens and their relationships.
+===============================================================================================================================================================
