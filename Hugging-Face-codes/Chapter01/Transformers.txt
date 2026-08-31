@@ -569,3 +569,18 @@ Eventually, the sequence with the best overall score is selected.
 | Randomness | Usually no                  | Yes                       |
 | Keeps      | Several candidate sequences | Candidate tokens          |
 | Common use | Translation, summarization  | Chat/creative generation  |
+
+
+=======================================================================================
+Key Performance Metrics
+
+When working with LLMs, four critical metrics will shape your implementation decisions:
+
+Time to First Token (TTFT): How quickly can you get the first response? This is crucial for user experience and is primarily affected by the prefill phase.
+
+Time Per Output Token (TPOT): How fast can you generate subsequent tokens? This determines the overall generation speed.
+
+Throughput: How many requests can you handle simultaneously? This affects scaling and cost efficiency.
+
+VRAM Usage: How much GPU memory do you need? This often becomes the primary constraint in real-world applications.
+
