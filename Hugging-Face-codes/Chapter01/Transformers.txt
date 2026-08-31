@@ -492,3 +492,80 @@ End-of-Sequence Detection: Letting the model naturally conclude its response
 
 For example, if we want to generate a single paragraph, we might set a maximum of 100 tokens and use “\n\n” as a stop sequence. This ensures our output stays focused and appropriately sized for its purpose
 =======================================================================================
+Beam Search Process
+
+Beam search is another way of choosing the output sequence from an LLM, but unlike normal sampling, it tries to find the best overall sequence rather than choosing one token at a time randomly.
+
+
+
+Simple example
+
+Suppose we're translating:
+
+"I love cricket" → French
+
+Set:
+
+beam size = 2
+
+The decoder starts:
+
+<START>
+
+It predicts:
+
+Je       60%
+J'       30%
+Le       10%
+
+Because beam size = 2, we keep the best 2 candidates:
+
+Je
+J'
+
+Now expand both:
+
+Je  → aime 70%
+       suis 20%
+       ...
+
+J'  → aime 80%
+      adore 15%
+      ...
+
+Now we have:
+
+Je aime       → 60% × 70%
+Je suis       → 60% × 20%
+
+J' aime       → 30% × 80%
+J' adore      → 30% × 15%
+
+We keep the best 2 complete/partial sequences again.
+
+Then repeat:
+
+<START>
+   ↓
+Keep best 2
+   ↓
+Expand both
+   ↓
+Keep best 2
+   ↓
+Expand both
+   ↓
+Keep best 2
+   ↓
+...
+   ↓
+<END>
+
+Eventually, the sequence with the best overall score is selected.
+
+|            | Beam Search                 | Temperature/Top-p         |
+| ---------- | --------------------------- | ------------------------- |
+| Goal       | Find high-scoring sequence  | Generate diverse sequence |
+| Randomness | Usually no                  | Yes                       |
+| Keeps      | Several candidate sequences | Candidate tokens          |
+| Common use | Translation, summarization  | Chat/creative generation  |
