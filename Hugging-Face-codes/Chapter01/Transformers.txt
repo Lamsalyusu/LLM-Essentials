@@ -480,3 +480,15 @@ Presence Penalty: A fixed penalty applied to any token that has appeared before,
 Frequency Penalty: A scaling penalty that increases based on how often a token has been used. The more a word appears, the less likely it is to be chosen again.
 
 =======================================================================================
+Controlling Generation Length: Setting Boundaries
+
+Just as a good story needs proper pacing and length, we need ways to control how much text our LLM generates. This is crucial for practical applications - whether we’re generating a tweet-length response or a full blog post.
+
+We can control generation length in several ways:
+
+Token Limits: Setting minimum and maximum token counts
+Stop Sequences: Defining specific patterns that signal the end of generation
+End-of-Sequence Detection: Letting the model naturally conclude its response
+
+For example, if we want to generate a single paragraph, we might set a maximum of 100 tokens and use “\n\n” as a stop sequence. This ensures our output stays focused and appropriately sized for its purpose
+=======================================================================================
