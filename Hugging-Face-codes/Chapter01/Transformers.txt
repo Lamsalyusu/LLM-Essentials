@@ -468,3 +468,15 @@ Repeat...
 top-k and top-p are optional sampling controls, and implementations don't necessarily require using both. In practice, you can use temperature alone, top-p, top-k, or combinations depending on the generation strategy.
 
 Temperature controls the randomness, top-k limits the candidate pool by count, and top-p limits it by cumulative probability.
+
+=======================================================================================
+
+Managing Repetition: Keeping Output Fresh
+
+One common challenge with LLMs is their tendency to repeat themselves - much like a speaker who keeps returning to the same points. To address this, we use two types of penalties:
+
+Presence Penalty: A fixed penalty applied to any token that has appeared before, regardless of how often. This helps prevent the model from reusing the same words.
+
+Frequency Penalty: A scaling penalty that increases based on how often a token has been used. The more a word appears, the less likely it is to be chosen again.
+
+=======================================================================================
