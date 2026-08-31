@@ -342,3 +342,129 @@ Continuation Check: Deciding whether to continue or stop generation
 
 This phase is memory-intensive because the model needs to keep track of all previously generated tokens and their relationships.
 ===============================================================================================================================================================
+
+Understanding the token selection 
+Model predicts scores → we control those scores → filter possible tokens → sample one token.
+
+1. Raw Logits
+The model first produces a score for every token in its vocabulary.
+For example:
+
+"cricket"  → 8.5
+"football" → 7.2
+"banana"   → 2.1
+"computer" → 5.4
+
+These are logits, not probabilities.
+
+2. Temperature Scaling
+Temperature controls how confident/random the models choices are.
+conceptually:
+
+Low temperature
+      ↓
+More focused / predictable
+
+High temperature
+      ↓
+More random / diverse
+
+mathematically:
+logits/temperature
+then softmax converts them into probalilities
+
+Temperature = 0.2
+
+cricket   → 0.90
+football  → 0.08
+banana    → 0.001
+
+Temperature = 1.5
+
+cricket   → 0.40
+football  → 0.30
+banana    → 0.10
+
+3.Top-k Filtering
+Only consider the K most probable tokens.
+suppose:
+cricket   40%
+football  30%
+tennis    15%
+banana     5%
+car        3%
+
+if top_k = 3:
+
+we keep:
+cricket
+football
+tennis
+
+and throw away the rest.
+
+4.Top-p sampling 
+Now we use a probability threshold instead of a fixed number.
+
+Suppose:
+
+cricket   40%
+football  30%
+tennis    15%
+banana     5%
+
+If:
+top_p = 0.90
+we keep tokens until their cumulative probability reaches 90%:
+40 + 30 + 15 + 5 = 90%
+
+Top-k → fixed number of tokens
+
+Top-p → variable number of tokens based on probability
+
+
+5.Selected Token
+
+Finally, the model samples/selects one token from the remaining candidates.
+
+For example:
+
+cricket   40%
+football  30%
+tennis    15%
+banana     5%
+
+It might select:
+
+football
+
+Then that token is added to the sequence:
+
+"I love playing football"
+
+And the whole process happens again to predict the next token.
+
+
+Transformer
+    ↓
+Raw Logits
+    ↓
+Temperature
+    ↓
+Top-k
+    ↓
+Top-p
+    ↓
+Sample
+    ↓
+Selected Token
+    ↓
+Feed token back into model
+    ↓
+Predict next token
+    ↓
+Repeat...
+
+top-k and top-p are optional sampling controls, and implementations don't necessarily require using both. In practice, you can use temperature alone, top-p, top-k, or combinations depending on the generation strategy.
+
+Temperature controls the randomness, top-k limits the candidate pool by count, and top-p limits it by cumulative probability.
