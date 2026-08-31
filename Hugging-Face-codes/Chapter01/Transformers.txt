@@ -298,3 +298,15 @@ Cross-Attention → looks at Encoder output
        ↓
 Predicts "le"
 ============================================================================================================================================================
+
+Context Length and Attention Span
+-> context length refers to the maximum number of tokens (word or parts of words) that the LLM can process at once.
+
+These capabilities are limited by several practical factors:
+The model’s architecture and size
+Available computational resources
+The complexity of the input and desired output
+
+in ideal world we can feed unlimited context to the model but hardware constraints and computational costs makes this impractical.
+
+The context length is the maximum number of tokens the model can consider at once when generating a response.
