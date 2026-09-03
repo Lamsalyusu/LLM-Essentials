@@ -53,9 +53,70 @@ Tokens
 Token IDs
  ↓
 Model inputs
+
 ==================================================================
 from transformers import AutoTokenizer
 
 tokenizer = AutoTokenizer.from_pretrained(checkpoint)
 
-Tokenizer converts human language into numerical inputs that the Transformer can process
+Tokenizer converts human language into numerical inputs that the Transformer can process.
+
+==================================================================
+
+input_ids
+
+The tokenizer returns something like:
+
+{
+    "input_ids": [...],
+    "attention_mask": [...]
+}
+
+input_ids
+
+These are the integer IDs representing the tokens.
+
+"I love cricket"
+      ↓
+[101, 1045, 2293, ...]
+
+The model uses these IDs to obtain the corresponding embeddings.
+
+=============================================================================
+
+attention_mask
+
+You will see this everywhere in Hugging Face.
+
+Example:
+
+input_ids:
+[101, 1045, 2293, 102, 0, 0, 0]
+
+attention_mask:
+[ 1,    1,    1,   1, 0, 0, 0]
+
+1 means:
+
+This is a real token.
+
+0 means:
+
+This is padding; ignore it.
+
+You don't need to go deeply into padding/truncation yet; HF covers those immediately afterward.
+
+return_tensors="pt" ⭐
+
+This is particularly relevant because you're learning PyTorch.
+
+inputs = tokenizer(
+    text,
+    return_tensors="pt"
+)
+
+"pt" means:
+
+Return PyTorch tensors
+
+Other frameworks can have their own tensor formats.
