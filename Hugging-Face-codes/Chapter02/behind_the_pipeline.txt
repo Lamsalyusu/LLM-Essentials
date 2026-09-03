@@ -1,0 +1,61 @@
+A pipeline has three major steps
+
+Input text
+    ↓
+1. Preprocessing
+    ↓
+2. Model inference
+    ↓
+3. Postprocessing
+    ↓
+Final result
+
+============================================================
+
+For example:
+
+from transformers import pipeline
+
+classifier = pipeline("sentiment-analysis")
+
+classifier("I love this!")
+
+==============================================================
+
+Underneath, HF is essentially doing:
+
+"I love this!"
+      ↓
+   Tokenizer
+      ↓
+Token IDs + Attention Mask
+      ↓
+Transformer Model
+      ↓
+Model Head
+      ↓
+Logits
+      ↓
+Softmax
+      ↓
+POSITIVE: 0.99
+
+================================================================
+
+Transformers cannot directly understand raw text.
+
+The tokenizer:
+
+Text
+ ↓
+Tokens
+ ↓
+Token IDs
+ ↓
+Model inputs
+==================================================================
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained(checkpoint)
+
+Tokenizer converts human language into numerical inputs that the Transformer can process
