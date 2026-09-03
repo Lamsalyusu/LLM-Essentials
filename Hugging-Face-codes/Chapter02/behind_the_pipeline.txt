@@ -120,3 +120,212 @@ inputs = tokenizer(
 Return PyTorch tensors
 
 Other frameworks can have their own tensor formats.
+
+6. Model
+
+Now we feed those inputs into a pretrained Transformer.
+
+HF provides:
+
+from transformers import AutoModel
+
+model = AutoModel.from_pretrained(checkpoint)
+
+The important concept:
+
+AutoModel
+   ↓
+Base Transformer
+   ↓
+Hidden states
+
+The base Transformer doesn't necessarily directly give you "POSITIVE" or "NEGATIVE".
+
+It produces hidden states — high-dimensional representations containing contextual information.
+
+
+Hidden States ⭐⭐⭐⭐⭐
+
+This is VERY important.
+
+Suppose:
+
+"I love cricket"
+
+After passing through the Transformer, you might get:
+
+[batch, sequence_length, hidden_size]
+
+For the HF example:
+
+[2, 16, 768]
+
+Meaning:
+
+2    → number of sentences
+16   → tokens per sentence
+768  → representation size of each token
+
+So remember:
+
+Hidden states are the rich contextual representations produced by the Transformer.
+
+
+Model Head ⭐⭐⭐⭐⭐
+
+This is another concept you should not forget.
+
+The Transformer is often just the base.
+
+A task-specific head is placed on top.
+
+                 Transformer
+                      ↓
+                Hidden States
+                      ↓
+                 Task Head
+                      ↓
+                   Output
+
+Different tasks → different heads.
+
+For example:
+
+AutoModelForSequenceClassification
+
+has a classification head.
+
+AutoModelForCausalLM
+
+has a language-modeling head for predicting tokens.
+
+HF lists several architectures including *ForCausalLM, *ForMaskedLM, *ForQuestionAnswering, *ForSequenceClassification, and *ForTokenClassification
+
+
+
+9. AutoModel vs AutoModelFor... ⭐⭐⭐⭐⭐
+
+This is something you should definitely put in your notes.
+
+AutoModel
+model = AutoModel.from_pretrained(...)
+
+Gives you the base Transformer and its hidden states.
+
+Task-specific model
+model = AutoModelForSequenceClassification.from_pretrained(...)
+
+Gives you:
+
+Transformer
+    +
+Classification Head
+
+For example:
+
+Input
+ ↓
+Transformer
+ ↓
+Hidden states
+ ↓
+Classification Head
+ ↓
+2 logits
+
+because our example has:
+
+NEGATIVE
+POSITIVE
+
+
+Logits ⭐⭐⭐⭐⭐
+
+The model doesn't initially output:
+
+POSITIVE = 99%
+
+It outputs logits.
+
+Example:
+
+[-1.56, 1.61]
+
+These are raw, unnormalized scores.
+
+Then:
+
+Logits
+  ↓
+Softmax
+  ↓
+Probabilities
+
+For example:
+
+[-1.56, 1.61]
+      ↓
+[0.04, 0.96]
+
+So:
+
+NEGATIVE → 4%
+POSITIVE → 96%
+
+The HF page explicitly emphasizes that logits are not probabilities.
+
+
+Postprocessing
+
+Finally, the pipeline converts those raw outputs into something useful:
+
+Logits
+ ↓
+Softmax
+ ↓
+Probabilities
+ ↓
+Labels
+
+Example:
+
+[
+    {
+        "label": "POSITIVE",
+        "score": 0.9598
+    }
+]
+
+
+
+                 RAW TEXT
+                    ↓
+                TOKENIZER
+                    ↓
+               input_ids
+             attention_mask
+                    ↓
+              ┌───────────┐
+              │ Embeddings│
+              └─────┬─────┘
+                    ↓
+          ┌──────────────────┐
+          │   TRANSFORMER    │
+          │                  │
+          │ Attention        │
+          │ FFN              │
+          │ Norm             │
+          │ Residual         │
+          └────────┬─────────┘
+                   ↓
+             HIDDEN STATES
+                   ↓
+              MODEL HEAD
+                   ↓
+                 LOGITS
+                   ↓
+                SOFTMAX
+                   ↓
+              PROBABILITIES
+                   ↓
+                 LABEL
