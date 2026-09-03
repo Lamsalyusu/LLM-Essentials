@@ -329,3 +329,29 @@ Example:
               PROBABILITIES
                    ↓
                  LABEL
+
+
+
+1. Tokenizer
+   Text → token IDs
+
+2. input_ids
+   Numerical representation of tokens
+
+3. attention_mask
+   1 = real token, 0 = padding
+
+4. Transformer
+   Token IDs → contextual hidden states
+
+5. Model Head
+   Hidden states → task-specific output
+
+6. Logits
+   Raw scores, NOT probabilities
+
+7. Softmax
+   Logits → probabilities
+
+
+A Hugging Face pipeline is basically Tokenizer → Transformer → Model Head → Postprocessing, with the pipeline hiding these steps from you.
