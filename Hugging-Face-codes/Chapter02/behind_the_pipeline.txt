@@ -355,3 +355,4 @@ Example:
 
 
 A Hugging Face pipeline is basically Tokenizer → Transformer → Model Head → Postprocessing, with the pipeline hiding these steps from you.
+Text → tokens/IDs → Transformer → task-specific head → logits → probabilities/output.
