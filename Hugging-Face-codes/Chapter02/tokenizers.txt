@@ -1,0 +1,50 @@
+. Why do we need a tokenizer?
+
+LLMs cannot directly understand text. They process numbers.
+
+"I love cricket"
+       ↓
+   Tokenizer
+       ↓
+["I", "love", "cricket"]
+       ↓
+[40, 2321, 10543]
+       ↓
+     Model
+
+A tokenizer converts text → tokens → token IDs.
+
+
+2. Three main tokenization approaches
+
+Word-based
+
+"I love cricket"
+→ ["I", "love", "cricket"]
+Simple
+Huge vocabulary
+Lots of unknown words ([UNK])
+Doesn't naturally capture relationships like run / running
+
+Character-based
+
+"cat" → ["c", "a", "t"]
+Tiny vocabulary
+Almost no unknown tokens
+But creates many tokens, making processing expensive
+
+Subword ⭐
+
+"tokenization"
+→ ["token", "ization"]
+
+This is the important one for modern LLMs.
+
+It gives a balance between vocabulary size, meaningful units, and sequence length.
+
+
+| Algorithm                   | Example                         |
+| --------------------------- | ------------------------------- |
+| **BPE / Byte-level BPE**    | GPT-2 and many GPT-style models |
+| **WordPiece**               | BERT                            |
+| **SentencePiece / Unigram** | Many multilingual models        |
