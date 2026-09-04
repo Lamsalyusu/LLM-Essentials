@@ -86,3 +86,27 @@ tokenizer(
     max_length=512,
     return_tensors="pt"
 )
+
+TEXT
+ ↓
+TOKENIZER
+ ↓
+input_ids + attention_mask (+ token_type_ids)
+ ↓
+TRANSFORMER MODEL
+ ↓
+HIDDEN STATES
+ ↓
+TASK-SPECIFIC HEAD
+ ↓
+OUTPUT
+
+
+
+AutoModel.from_pretrained()
+model.save_pretrained()
+tokenizer(...)
+tokenizer.decode()
+padding=True
+truncation=True
+return_tensors="pt"
