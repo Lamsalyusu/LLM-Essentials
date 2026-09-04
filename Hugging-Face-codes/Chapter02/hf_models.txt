@@ -1,0 +1,88 @@
+1.AutoModel.from_pretrained()
+
+from transformers import AutoModel
+model = Automodel.from_pretrained("bert-base-cased")
+
+AutoModel automatically detects the correct model architecture from the checkpoint.
+from_pretrained() downloads pretrained architecture + weights from Hugging Face Hub.
+
+You can also use the specific class:
+from transformers import BertModel
+model = BertModel.from_pretrained("bert-base-cased")
+
+checkpoint name
+      ↓
+AutoModel
+      ↓
+correct architecture + pretrained weights
+
+
+2. Saving & Loading Models
+model.save_pretrained("my_model")
+
+Typically saves:
+
+config.json
+model.safetensors
+config.json → describes the architecture/configuration
+model.safetensors → contains the trained weights
+
+Load again:
+
+model = AutoModel.from_pretrained("my_model")
+
+Remember:
+
+Config = how to build the model
+Weights = what the model learned
+
+3. Tokenizer → Model
+
+Tokenizer converts text into numbers:
+
+inputs = tokenizer("Hello world", return_tensors="pt")
+output = model(**inputs)
+
+The tokenizer can produce:
+
+input_ids
+attention_mask
+token_type_ids
+input_ids → token IDs
+attention_mask → which tokens should be considered
+token_type_ids → identifies sentence A/B in models such as BERT
+
+Special tokens may also be automatically added, e.g. BERT:
+
+
+4. Padding & Truncation ⭐
+
+Different sentences have different lengths, but tensors need a rectangular shape.
+
+Padding:
+
+tokenizer(texts, padding=True)
+
+Adds padding tokens to shorter sequences.
+
+The padding positions get:
+
+attention_mask = 0
+
+so the model ignores them.
+
+Truncation:
+
+tokenizer(texts, truncation=True, max_length=512)
+
+Cuts sequences that are too long for the model's supported context length.
+
+Often you'll use:
+
+tokenizer(
+    texts,
+    padding=True,
+    truncation=True,
+    max_length=512,
+    return_tensors="pt"
+)
