@@ -48,3 +48,94 @@ It gives a balance between vocabulary size, meaningful units, and sequence lengt
 | **BPE / Byte-level BPE**    | GPT-2 and many GPT-style models |
 | **WordPiece**               | BERT                            |
 | **SentencePiece / Unigram** | Many multilingual models        |
+
+
+
+4. AutoTokenizer ⭐
+
+Usually you'll do:
+
+from transformers import AutoTokenizer
+
+tokenizer = AutoTokenizer.from_pretrained("bert-base-cased")
+
+AutoTokenizer automatically selects the appropriate tokenizer for the checkpoint.
+
+Important: the tokenizer must match the model's pretrained tokenizer/vocabulary.
+
+
+5. Tokenization → IDs
+
+You can see the intermediate steps:
+
+tokens = tokenizer.tokenize("Using a Transformer network")
+
+Example:
+
+["Using", "a", "transform", "##er", "network"]
+
+Then:
+
+ids = tokenizer.convert_tokens_to_ids(tokens)
+["Using", "a", "transform", "##er"]
+             ↓
+[7993, 170, 11303, 1200]
+
+So:
+
+TEXT
+ ↓
+tokenize()
+ ↓
+TOKENS
+ ↓
+convert_tokens_to_ids()
+ ↓
+INPUT IDs
+
+6. Encoding ⭐
+
+Encoding = tokenization + conversion to IDs
+
+encoded = tokenizer("Hello world")
+
+You normally don't manually perform the two steps—you just call the tokenizer.
+
+tokenizer("Hello world")
+
+It gives things like:
+
+input_ids
+attention_mask
+token_type_ids
+
+
+7. Decoding ⭐
+
+The reverse process:
+
+tokenizer.decode([7993, 170, 11303])
+IDs
+ ↓
+Tokens
+ ↓
+Readable text
+
+This becomes extremely important for LLM generation, because the model predicts token IDs and we need to convert those IDs back into text
+
+             ENCODING
+                ↓
+Text → Tokenization → Token IDs → Model
+                                      ↓
+                                  Predicted IDs
+                                      ↓
+                                  DECODING
+                                      ↓
+                                    Text
+
+
+Tokenizer converts text into numbers.
+Subword tokenization is the important approach for modern LLMs.
+AutoTokenizer.from_pretrained() loads the correct tokenizer + vocabulary.
+Encoding: text → tokens → IDs.
+Decoding: IDs → tokens → readable text.
