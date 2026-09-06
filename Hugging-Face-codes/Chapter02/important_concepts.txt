@@ -1,0 +1,24 @@
+1. Checkpoint
+
+A checkpoint is a saved/pretrained model package, such as "bert-base-cased" or "gpt2", containing the model's weights + configuration (and usually tokenizer files).
+Example: bert-base-cased is a checkpoint you load with from_pretrained().
+
+2. Model
+
+The model is the actual neural network architecture + loaded weights that performs computation on your input.
+Example: AutoModel.from_pretrained("bert-base-cased") loads the BERT model using that checkpoint.
+
+3. Tokenizer
+
+The tokenizer converts human text into tokens and then into the numerical IDs the model understands.
+Example: "I love cricket" → ["I", "love", "cricket"] → [1045, 2293, 4537].
+
+4. Sequence / Sequence IDs
+
+A sequence is one complete piece of tokenized text; sequence IDs are the token IDs representing that sequence.
+Example: "I love cricket" → sequence = ["I","love","cricket"], sequence IDs = [1045,2293,4537].
+
+5. Input IDs
+
+input_ids are simply the token IDs actually passed into the model as a tensor.
+Example: input_ids = [[1045, 2293, 4537]] where the outer [] represents batch size = 1.
