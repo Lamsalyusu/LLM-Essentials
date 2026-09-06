@@ -100,3 +100,74 @@ Meaning:
 Why is this necessary?
 
 Because self-attention considers tokens in the sequence. Without the mask, the model could attend to the padding tokens and produce different results.
+
+======================================================================================================================================================
+
+Usually the tokenizer handles this for you
+
+You don't normally create padding and masks manually.
+
+inputs = tokenizer(
+    sentences,
+    padding=True,
+    truncation=True,
+    return_tensors="pt"
+)
+
+outputs = model(**inputs)
+
+The tokenizer creates:
+
+input_ids
+attention_mask
+
+for you.
+
+6. Sequence length limit
+
+Transformers have a maximum sequence length.
+
+If the input is too long:
+
+Input: 2000 tokens
+Model limit: 512
+
+you can't simply feed all 2000 tokens.
+
+Options:
+
+Use a model supporting longer sequences.
+Truncate the input.
+tokenizer(
+    text,
+    truncation=True,
+    max_length=512
+)
+
+The exact limit depends on the model.
+
+=============================================================================================================================
+
+Multiple texts
+      ↓
+Tokenizer
+      ↓
+Padding → same sequence length
+      ↓
+input_ids + attention_mask
+      ↓
+   Transformer
+      ↓
+   Outputs
+
+============================================================================================================================
+Remember these 5 things:
+Models expect [batch_size, sequence_length].
+Batching = processing multiple sequences together.
+Padding makes different-length sequences the same length.
+Attention mask: 1 = attend, 0 = ignore. ⭐
+Long sequences must be truncated or handled by a model with a larger context length.
+
+The key connection to your previous lessons is:
+
+Padding solves the tensor-shape problem; attention masks solve the “don't let the model pay attention to padding” problem
