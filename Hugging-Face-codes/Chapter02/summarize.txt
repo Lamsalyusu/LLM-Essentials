@@ -1,0 +1,101 @@
+Putting It All Together 
+
+1. The tokenizer does most of the preparation
+Instead of manually doing:
+
+text
+→ tokenize
+→ token IDs
+→ padding
+→ truncation
+→ attention mask
+
+you can simply do:
+
+model_inputs = tokenizer(sequence)
+
+The tokenizer returns everything the model needs, such as input_ids and attention_mask.
+
+2. One sentence or many sentences
+
+Same API:
+
+tokenizer("Hello world")
+
+or:
+
+tokenizer(["Hello world", "How are you?"])
+
+So you don't need a different method for batching.
+
+3. Padding
+
+Padding makes sequences the same length.
+tokenizer(sequences, padding="longest")
+Main options:
+padding="longest"     → pad to longest sequence in the batch
+padding="max_length"  → pad to specified/model maximum length
+
+You can also specify:
+
+max_length=8
+
+4. Truncation
+
+If a sequence is too long, truncate it:
+tokenizer(sequences, truncation=True)
+Or specify your own maximum:
+tokenizer(sequences, max_length=8, truncation=True)
+
+5. Getting PyTorch tensors ⭐
+
+You can tell the tokenizer what framework you want:
+
+return_tensors="pt"
+
+For PyTorch:
+
+tokenizer(..., return_tensors="pt")
+
+For NumPy:
+
+tokenizer(..., return_tensors="np")
+
+So the tokenizer can directly produce tensors ready for the model.
+
+6. Special tokens ⭐
+
+This is an important detail.
+
+When you manually tokenize:
+
+I've been waiting...
+
+you may get token IDs such as:
+
+[1045, 1005, 2310, ...]
+
+But calling:
+
+tokenizer(sequence)
+
+may automatically add special tokens:
+
+[CLS] ... [SEP]
+
+For BERT/DistilBERT, these are required because the model was pretrained with them. Different models can use different special tokens
+
+main pipeline for this summarization
+Text
+ ↓
+Tokenizer
+ ↓
+Token IDs + Attention Mask
+ ↓
+Padding / Truncation
+ ↓
+PyTorch Tensors
+ ↓
+Model
+ ↓
+Output
