@@ -1,0 +1,102 @@
+1. Models expect a batch
+
+A single sequence has shape:
+
+[sequence_length]
+
+But Transformers generally expect:
+
+[batch_size, sequence_length]
+
+So even for one sentence, you need a batch dimension:
+
+input_ids = torch.tensor([ids])
+
+instead of:
+
+input_ids = torch.tensor(ids)
+
+Example:
+
+[101, 1045, 2310, 2042]
+
+❌ shape: [4]
+
+[[101, 1045, 2310, 2042]]
+
+✅ shape: [1, 4]
+
+That first 1 means batch size = 1.
+
+====================================================================================
+
+2. Batching ⭐
+
+Instead of processing:
+
+Sentence 1 → model
+Sentence 2 → model
+Sentence 3 → model
+
+we process them together:
+
+Sentence 1 ┐
+Sentence 2 ├→ Model
+Sentence 3 ┘
+
+Example:
+
+batched_ids = [ids1, ids2, ids3]
+
+Shape:
+
+[3, sequence_length]
+
+This is more efficient because the model processes multiple sequences together.
+
+===================================================================================
+3. Problem: different sequence lengths
+
+Suppose:
+
+Sentence 1 → [101, 200, 300, 400]
+Sentence 2 → [101, 200]
+
+You can't directly make this a normal tensor because tensors need a rectangular shape.
+
+So we use padding.
+
+Sentence 1 → [101, 200, 300, 400]
+Sentence 2 → [101, 200, PAD, PAD]
+
+Now both have length 4.
+
+tokenizer.pad_token_id
+
+gives you the appropriate padding token ID
+
+====================================================================================
+4. Attention Mask ⭐⭐⭐
+
+This is the most important concept in this section.
+
+Padding tokens aren't real information, so we tell the Transformer to ignore them.
+
+input_ids:
+
+[101, 200, 300, 400]
+[101, 200, PAD, PAD]
+
+attention_mask:
+
+[1, 1, 1, 1]
+[1, 1, 0, 0]
+
+Meaning:
+
+1 → pay attention to this token
+0 → ignore this token
+
+Why is this necessary?
+
+Because self-attention considers tokens in the sequence. Without the mask, the model could attend to the padding tokens and produce different results.
