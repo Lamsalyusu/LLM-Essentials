@@ -165,3 +165,70 @@ This makes tokenization much faster, because Hugging Face's fast tokenizers are 
 Dataset.map() + batched=True
                 ↓
        faster preprocessing
+
+
+
+Why DON'T we use padding=True here? ⭐⭐⭐
+
+This is a very important optimization.
+
+Imagine your dataset has sequences:
+
+32 tokens
+50 tokens
+67 tokens
+100 tokens
+500 tokens
+
+If you pad everything in the whole dataset to 500:
+
+32  → 500
+50  → 500
+67  → 500
+100 → 500
+
+you're wasting a huge amount of computation on padding.
+
+Instead, HF delays padding until batches are created.
+
+This is called:
+
+Dynamic Padding
+
+Each batch is padded only to the longest sequence inside that batch.
+
+
+DataCollatorWithPadding ⭐⭐⭐
+
+HF provides:
+
+from transformers import DataCollatorWithPadding
+
+data_collator = DataCollatorWithPadding(tokenizer=tokenizer)
+
+Its job is basically:
+
+Take examples
+      ↓
+Find longest sequence in THIS batch
+      ↓
+Pad the other sequences
+      ↓
+Create tensors
+
+Example batch:
+
+[50 tokens]
+[59 tokens]
+[47 tokens]
+[67 tokens]
+
+Dynamic padding gives:
+
+[67]
+[67]
+[67]
+[67]
+
+instead of padding everything to some huge global maximum.
+
