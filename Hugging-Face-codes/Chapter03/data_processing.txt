@@ -296,3 +296,10 @@ T = 67
    input_ids [B,T]
    attention_mask [B,T]
    labels [B]
+
+And Dataset.map() + batched=True + DataCollatorWithPadding are the three pieces I'd make sure you understand before moving to the Trainer API
+
+Use batched=True with Dataset.map() for significantly faster preprocessing
+Dynamic padding with DataCollatorWithPadding is more efficient than fixed-length padding
+Always preprocess your data to match what your model expects (numerical tensors, correct column names)
+The 🤗 Datasets library provides powerful tools for efficient data processing at scale
