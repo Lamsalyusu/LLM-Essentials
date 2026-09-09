@@ -1,0 +1,147 @@
+optimized inference , TGI , vLLM and llama.cpp
+
+1.Optimized Inference
+ prompt --> model --> generated tokens
+in production --> many users --> many requests at a same time. 
+we need to make inference much faster and memory efficient.
+tools like TGI, vLLM and llama.cpp are designed to serve LLMs efficiently in production
+
+2.TGI - Text Genration Inference 
+TGI is Hugging face's production-oriented server for serving text genration models.
+uses optimizations like flash attentions 2 and continuous batching
+
+something like :
+many requests --> TGI --> GPU efficiently processes them 
+
+important things 
+- production focused 
+- continuous batching
+- flash attentions
+- can move from cpu/gpu when needed
+
+3.Flash Attention
+NOrmal attentions has a major memory-bandwidth bottleneck , especially for long sequences 
+flash attentions improves this by reducing expensive memory transfers between GPU high bandwith memory and faster on-chip memory while performing the attention calculation.
+
+Normal Attention
+GPU memory ↔ fast memory
+many transfers ❌
+
+Flash Attention
+load efficiently → compute
+fewer transfers ✅
+
+4.vLLM 
+--> LLM serving framework designed around efficient GPU utilization and paged attention.
+during genration model stores previous K V tensors in KV cache 
+with many users 
+request 1 --> KV CACHE 
+request 2 --> KV cache 
+request 3 --> KV cache 
+
+Paged Attention
+ vLLM divides KV-cache memory into smaller pages/blocks instead of requiring one large continuous memory region
+ KV Cache
+
+Traditional:
+[████████████████████]  one large block
+
+vLLM:
+[██][██][██][██][██]
+ pages
+
+ 
+ A page table keeps track of where each sequence's pages are stored. Pages can also be shared in some situations
+ 
+vLLM → PagedAttention → efficient KV-cache memory management.
+
+5. llama.cpp
+It is a highly optimized C/C++ implementation designed especially for running LLMs efficiently on consumer hardware/CPUs, with optional GPU acceleration.
+
+
+Quantization
+
+Instead of storing weights as:
+
+FP32 / FP16
+FP ---> floating point 
+you can use lower-precision formats such as:
+
+INT8
+INT4
+etc.
+
+This greatly reduces memory requirements and can make local inference practical.
+
+Large FP16 model
+      ↓ quantization
+Smaller 4-bit model
+      ↓
+Less RAM/VRAM needed
+
+It commonly uses the GGUF model format for this style of inference.
+
+6. The big comparison
+
+| Framework     | Main idea                   | Best mental association                  |
+| ------------- | --------------------------- | ---------------------------------------- |
+| **TGI**       | Production HF serving       | Flash Attention + continuous batching    |
+| **vLLM**      | High-performance serving    | **PagedAttention + KV cache**            |
+| **llama.cpp** | Lightweight local inference | **Quantization + CPU/consumer hardware** |
+
+
+7. What is batching here?
+
+Suppose 3 users send requests:
+
+User A → "Explain CNN"
+User B → "Explain RNN"
+User C → "Explain Transformers"
+
+Instead of inefficiently processing everything separately, serving systems can organize requests so the GPU is continuously doing useful work.
+
+This is why batching is so important in production LLM serving. TGI specifically uses continuous batching.
+
+
+Inference
+   ↓
+Production serving
+   ↓
+ ┌─────────────┬──────────────┬──────────────┐
+ TGI           vLLM           llama.cpp
+ ↓             ↓              ↓
+Flash Attn     PagedAttention Quantization
+Batching       KV Cache       Local/CPU
+
+
+KV Cache
+   ↓
+Memory becomes huge with many users
+   ↓
+vLLM
+   ↓
+PagedAttention
+   ↓
+better KV-cache memory management
+
+
+Large model
+   ↓
+Quantization
+   ↓
+smaller weights
+   ↓
+llama.cpp
+   ↓
+run models locally with limited hardware
+
+
+Large model
+   ↓
+Quantization
+   ↓
+smaller weights
+   ↓
+llama.cpp
+   ↓
+run models locally with limited hardware
