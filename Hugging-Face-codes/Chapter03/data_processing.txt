@@ -111,3 +111,57 @@ But for a sentence-pair classification task, you want:
 tokenizer(sentence1, sentence2)
 
 because the model needs to receive them as one paired input.
+
+
+Why Dataset.map()? ⭐⭐⭐
+
+You could do:
+
+tokenized_dataset = tokenizer(
+    raw_datasets["train"]["sentence1"],
+    raw_datasets["train"]["sentence2"]
+)
+
+But HF recommends using:
+
+dataset.map(...)
+
+because it keeps the result as a Hugging Face Dataset and lets you process the dataset efficiently rather than creating one giant in-memory dictionary.
+
+def tokenize_function(example):
+    return tokenizer(
+        example["sentence1"],
+        example["sentence2"],
+        truncation=True
+    )
+
+    tokenized_datasets = raw_datasets.map(
+    tokenize_function,
+    batched=True
+)
+
+
+7. What does batched=True mean?
+
+Without it:
+
+example 1 → tokenize
+example 2 → tokenize
+example 3 → tokenize
+...
+
+With:
+
+batched=True
+
+the tokenizer receives multiple examples at once:
+
+example 1 ┐
+example 2 ├→ tokenizer
+example 3 ┘
+
+This makes tokenization much faster, because Hugging Face's fast tokenizers are optimized for processing batches
+
+Dataset.map() + batched=True
+                ↓
+       faster preprocessing
