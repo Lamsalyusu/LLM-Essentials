@@ -232,3 +232,37 @@ Dynamic padding gives:
 
 instead of padding everything to some huge global maximum.
 
+
+10. What does the final batch look like?
+
+Suppose we take 8 examples.
+
+Their lengths might be:
+
+50, 59, 47, 67, 59, 50, 62, 32
+
+Maximum = 67
+
+After dynamic padding:
+
+input_ids      → [8, 67]
+attention_mask → [8, 67]
+token_type_ids → [8, 67]
+labels         → [8]
+
+This is exactly the kind of batch your model can consume.
+
+Notice how this connects directly to what you asked me earlier:
+
+input_ids
+[B, T]
+
+and after the Transformer:
+
+hidden states
+[B, T, C]
+
+Here:
+
+B = 8
+T = 67
