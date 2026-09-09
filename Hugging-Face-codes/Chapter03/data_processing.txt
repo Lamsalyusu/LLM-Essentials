@@ -41,3 +41,73 @@ test        1725
     "label": 1,
     "idx": 0
 }
+
+
+3. Why do we need preprocessing?
+
+The model can't understand:
+
+"I love cricket"
+
+directly.
+
+We need:
+
+Text
+ ↓
+Tokenizer
+ ↓
+Token IDs
+ ↓
+Tensor
+ ↓
+Model
+
+For the MRPC task, we have two sentences, so we need to tell BERT that they form one pair.
+
+
+4. Tokenizing two sentences together ⭐
+
+This is important:
+
+inputs = tokenizer(
+    "This is the first sentence.",
+    "This is the second one."
+)
+
+BERT turns this into something like:
+
+[CLS] sentence1 [SEP] sentence2 [SEP]
+
+And gives:
+
+input_ids
+token_type_ids
+attention_mask
+
+What is token_type_ids?
+
+This tells BERT which sentence each token belongs to:
+
+Sentence 1 → 0
+Sentence 2 → 1
+
+Example:
+
+[CLS] This is first [SEP] This is second [SEP]
+  0    0    0   0    0      1    1    1    1
+
+This is especially relevant to BERT-style sentence-pair inputs. Not every model returns token_type_ids; the tokenizer/model checkpoint determines that.
+
+5. Don't tokenize separately for this task
+
+You might initially think:
+
+tokenizer(sentence1)
+tokenizer(sentence2)
+
+But for a sentence-pair classification task, you want:
+
+tokenizer(sentence1, sentence2)
+
+because the model needs to receive them as one paired input.
