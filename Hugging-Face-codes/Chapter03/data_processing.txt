@@ -17,3 +17,27 @@ Model
 Loss
    ↓
 Backpropagation
+
+this section tell us how to get from raw text to batches that the model can train on.
+
+
+2. First: what dataset are we using?
+
+from datasets import load_dataset
+raw_datasets = load_dataset("glue", "mrpc")
+
+MRPC contains sentence pairs and a binary label:
+
+0 → not equivalent
+1 → equivalent
+
+train       3668
+validation   408
+test        1725
+
+{
+    "sentence1": "...",
+    "sentence2": "...",
+    "label": 1,
+    "idx": 0
+}
