@@ -266,3 +266,33 @@ Here:
 
 B = 8
 T = 67
+
+1. Dataset
+   ↓
+   raw text + labels
+
+2. Tokenizer
+   ↓
+   text → input_ids / attention_mask / token_type_ids
+
+3. Sentence pair
+   ↓
+   tokenizer(sentence1, sentence2)
+
+4. Dataset.map()
+   ↓
+   apply preprocessing to the whole dataset
+
+5. batched=True
+   ↓
+   process many examples at once → faster
+
+6. DataCollatorWithPadding
+   ↓
+   dynamic padding per batch
+
+7. Final batch
+   ↓
+   input_ids [B,T]
+   attention_mask [B,T]
+   labels [B]
