@@ -114,3 +114,158 @@ Configuration files
 Logs, depending on configuration
 
 The official page states that the output directory is the main required argument for a basic setup, while most other arguments have usable defaults.
+
+
+==================IMPORTANT TRAINING ARGUMENTS=========================================
+
+Important TrainingArguments
+
+Although the basic example only uses output_dir, you should understand these important parameters.
+
+output_dir
+
+Where model checkpoints and outputs are saved.
+
+output_dir="test-trainer"
+num_train_epochs
+
+Number of complete passes through the training dataset.
+
+num_train_epochs=3
+
+If the dataset contains 3,000 examples, three epochs means the model sees those examples approximately three times.
+
+per_device_train_batch_size
+
+Number of examples processed by one device in each batch.
+
+per_device_train_batch_size=8
+
+If you use one GPU, the effective batch size is normally 8.
+
+per_device_eval_batch_size
+
+Batch size used during evaluation.
+
+per_device_eval_batch_size=8
+learning_rate
+
+Controls how large each optimizer update is.
+
+learning_rate=2e-5
+
+For fine-tuning BERT-like models, learning rates are often much smaller than those used when training a model from scratch.
+
+weight_decay
+
+Regularization that helps reduce overfitting.
+
+weight_decay=0.01
+eval_strategy
+
+Controls when evaluation happens during training.
+
+eval_strategy="epoch"
+
+Possible important values:
+
+"no"      → no evaluation during training
+"steps"   → evaluate every eval_steps
+"epoch"   → evaluate at the end of each epoch
+
+The course specifically explains that evaluation must be enabled using eval_strategy="steps" or eval_strategy="epoch". 
+Hugging Face
+
+eval_steps
+
+Used when:
+
+eval_strategy="steps"
+
+Example:
+
+eval_steps=500
+
+The model is evaluated every 500 training steps.
+
+save_strategy
+
+Controls when checkpoints are saved.
+
+save_strategy="epoch"
+logging_steps
+
+Controls how frequently training logs are printed.
+
+logging_steps=100
+push_to_hub
+
+Automatically uploads the model to the Hugging Face Hub during training.
+
+push_to_hub=True
+
+You will learn more about this in the model-sharing chapter.
+
+6. Loading the pretrained model
+
+Now load the model:
+
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    checkpoint,
+    num_labels=2,
+)
+
+Here:
+
+checkpoint = "bert-base-uncased"
+
+And:
+
+num_labels=2
+
+means the classification task has two possible labels:
+
+0 → not equivalent
+1 → equivalent
+Important warning when loading the model
+
+You may see a warning similar to:
+
+Some weights were not initialized ...
+Some weights were not used ...
+You should probably TRAIN this model ...
+
+This is expected.
+
+Why?
+
+Because the original BERT model was pretrained for general language understanding. It was not originally trained specifically for MRPC sentence classification.
+
+Therefore:
+
+Original pretrained BERT
+    ↓
+Remove or ignore the old task-specific head
+    ↓
+Attach a new sequence-classification head
+    ↓
+Randomly initialize the new head
+
+The BERT body contains useful pretrained weights, but the new classification head must learn the MRPC task.
+
+Conceptual architecture
+Input sentence pair
+        ↓
+Tokenizer
+        ↓
+BERT Transformer
+        ↓
+Sequence classification head
+        ↓
+2 logits
+        ↓
+Class prediction
+
+The new classification head starts with random weights, so training is necessary.
