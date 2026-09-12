@@ -65,3 +65,27 @@ Checkpoint saving
 Learning-rate scheduling
 
 It simply manages them for you
+
+3. Complete workflow
+
+The overall workflow is:
+
+Load dataset
+    ↓
+Load tokenizer
+    ↓
+Tokenize dataset
+    ↓
+Create dynamic padding collator
+    ↓
+Define TrainingArguments
+    ↓
+Load pretrained model
+    ↓
+Create Trainer
+    ↓
+Train model
+    ↓
+Evaluate model
+    ↓
+Save model/checkpoints
