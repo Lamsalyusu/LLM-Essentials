@@ -8,7 +8,7 @@ from transformers import (
 # 1. Load dataset
 # --------------------------------------------------
 
-raw_datasets = load_dataset("glue", "mrpc")
+raw_datasets = load_dataset("nyu-mll/glue", "mrpc")
 
 print("\nDATASET:")
 print(raw_datasets)

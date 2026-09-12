@@ -1,0 +1,16 @@
+we will explore on fine tuning a model uding TRAINER API
+the main idea here is 
+You already have a pretrained model and processed dataset. Trainer handles most of the training and evaluation workflow for you.
+
+1.What is fine tuining?
+Fine-tuning means taking a pretrained model and training it further on a smaller, task-specific dataset.
+
+For example:
+
+Pretrained BERT
+    ↓
+Fine-tune on sentence-pair dataset
+    ↓
+BERT that predicts whether two sentences are equivalent
+
+The pretrained model already understands general language patterns. Fine-tuning teaches it a specific task.
