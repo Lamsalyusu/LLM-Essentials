@@ -14,3 +14,54 @@ Fine-tune on sentence-pair dataset
 BERT that predicts whether two sentences are equivalent
 
 The pretrained model already understands general language patterns. Fine-tuning teaches it a specific task.
+
+2.what is a trainer API?
+Trainer is a high-level Hugging face class that manages much of the training process.
+For example:
+
+Pretrained BERT
+    ↓
+Fine-tune on sentence-pair dataset
+    ↓
+BERT that predicts whether two sentences are equivalent
+
+The pretrained model already understands general language patterns. Fine-tuning teaches it a specific task.
+
+With Trainer, you mostly provide:
+
+The model
+
+Training dataset
+
+Validation dataset
+
+Training configuration
+
+Tokenizer/processing class
+
+Data collator
+
+Optional metrics function
+
+then you call:
+trainer.train()
+important trainer doesnot remove the underlying Pytorch concepts.
+
+Internally it still performs:
+Forward pass
+
+Loss calculation
+
+Backpropagation
+
+Optimizer updates
+
+Batching
+
+Evaluation
+
+Checkpoint saving
+
+Learning-rate scheduling
+
+It simply manages them for you
