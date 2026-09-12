@@ -89,3 +89,28 @@ Train model
 Evaluate model
     ↓
 Save model/checkpoints
+
+
+5. TrainingArguments
+
+Before creating the Trainer, define TrainingArguments.
+
+from transformers import TrainingArguments
+
+training_args = TrainingArguments(
+    output_dir="test-trainer",
+)
+
+The output_dir is where Hugging Face stores:
+
+The trained model
+
+Checkpoints
+
+Training state
+
+Configuration files
+
+Logs, depending on configuration
+
+The official page states that the output directory is the main required argument for a basic setup, while most other arguments have usable defaults.
