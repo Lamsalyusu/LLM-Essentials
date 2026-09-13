@@ -269,3 +269,137 @@ Sequence classification head
 Class prediction
 
 The new classification head starts with random weights, so training is necessary.
+
+7. Creating the Trainer
+from transformers import Trainer
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_datasets["train"],
+    eval_dataset=tokenized_datasets["validation"],
+    data_collator=data_collator,
+    processing_class=tokenizer,
+)
+
+Explanation of each argument
+model=model
+
+The pretrained model that will be fine-tuned.
+
+model=model
+args=training_args
+
+The training configuration.
+
+args=training_args
+
+This tells the trainer things like:
+
+Output directory
+
+Batch size
+
+Learning rate
+
+Number of epochs
+
+Evaluation strategy
+
+Checkpoint strategy
+
+train_dataset
+
+The dataset used to update model weights.
+
+train_dataset=tokenized_datasets["train"]
+eval_dataset
+
+The dataset used to measure performance during evaluation.
+
+eval_dataset=tokenized_datasets["validation"]
+
+The validation dataset is not normally used to update the model’s weights.
+
+data_collator
+
+Creates batches and dynamically pads sequences.
+
+data_collator=data_collator
+
+This is important because examples may have different lengths.
+
+For example:
+
+Example 1: 20 tokens
+Example 2: 35 tokens
+Example 3: 28 tokens
+
+The collator may create:
+
+Batch shape: [3, 35]
+
+The shorter examples are padded to length 35.
+
+processing_class
+processing_class=tokenizer
+
+This tells the Trainer which tokenizer or processing object is associated with the model.
+
+The current course uses processing_class for this purpose. In older tutorials, you may see:
+
+tokenizer=tokenizer
+
+The newer parameter is:
+
+processing_class=tokenizer
+
+Also, when the processing class is supplied, the trainer can automatically use an appropriate padding data collator. The course still passes data_collator explicitly to demonstrate the processing pipeline.
+
+
+8. Starting training
+
+Once the trainer is created:
+
+trainer.train()
+
+This starts fine-tuning.
+
+Internally, the process is approximately:
+
+Get batch
+    ↓
+Move batch to device
+    ↓
+Model forward pass
+    ↓
+Calculate classification loss
+    ↓
+Backpropagation
+    ↓
+Optimizer update
+    ↓
+Learning-rate scheduler update
+    ↓
+Repeat
+
+The model’s pretrained weights are adjusted so that its predictions become better on the MRPC task.
+
+
+Important: training loss
+
+During training, you may see output like:
+
+loss: 0.45
+
+Loss measures how incorrect the model’s predictions are according to the training objective.
+
+For classification, the model usually uses cross-entropy loss.
+
+Generally:
+
+Lower loss → better fit to the training data
+
+But training loss alone does not tell you whether the model generalizes well to unseen data.
+
+That is why validation evaluation is necessary.
