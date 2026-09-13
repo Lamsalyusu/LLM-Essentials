@@ -403,3 +403,134 @@ Lower loss → better fit to the training data
 But training loss alone does not tell you whether the model generalizes well to unseen data.
 
 That is why validation evaluation is necessary.
+
+
+9. Why evaluation is not automatically shown
+
+The first simple trainer:
+
+trainer = Trainer(
+    model=model,
+    args=training_args,
+    train_dataset=tokenized_datasets["train"],
+    eval_dataset=tokenized_datasets["validation"],
+    data_collator=data_collator,
+    processing_class=tokenizer,
+)
+
+may train successfully but not show useful evaluation metrics during training.
+
+There are two reasons:
+
+Reason 1: No evaluation strategy
+
+You did not specify:
+
+eval_strategy="epoch"
+
+or:
+
+eval_strategy="steps"
+
+Therefore, evaluation is not automatically performed at regular points during training.
+
+Reason 2: No compute_metrics
+
+Even if evaluation occurs, the trainer may only report evaluation loss unless you provide a function that calculates metrics such as:
+
+Accuracy
+
+F1 score
+
+Precision
+
+Recall
+
+The course explicitly identifies these two missing pieces.
+
+10. Evaluating with trainer.predict()
+
+You can evaluate the current model using:
+
+predictions = trainer.predict(
+    tokenized_datasets["validation"]
+)
+
+Then inspect the shapes:
+
+print(
+    predictions.predictions.shape,
+    predictions.label_ids.shape,
+)
+
+Expected output:
+
+(408, 2) (408,)
+
+Why?
+
+The validation set contains 408 examples.
+
+Each example receives two logits:
+
+408 examples × 2 classes
+
+Therefore:
+
+predictions.predictions.shape = [408, 2]
+predictions.label_ids.shape = [408]
+
+11. Understanding trainer.predict() output
+
+The returned object contains three important fields:
+
+predictions.predictions
+predictions.label_ids
+predictions.metrics
+predictions.predictions
+
+The model’s output logits.
+
+Example:
+
+[
+    [ 2.4, -1.1],
+    [-0.7,  1.8],
+    [ 1.2,  0.3]
+]
+
+Each row corresponds to one example.
+
+Each column corresponds to one class.
+
+Column 0 → not equivalent
+Column 1 → equivalent
+
+These are logits, not probabilities.
+
+predictions.label_ids
+
+The actual labels from the dataset.
+
+Example:
+
+[1, 0, 1, 1, 0, ...]
+predictions.metrics
+
+Contains evaluation loss and timing information.
+
+Once you provide compute_metrics, it also includes metrics such as accuracy and F1.
+
+
+12. Converting logits into predictions
+
+You need to select the class with the highest logit.
+
+Use NumPy:
+
+import numpy as np
+
+preds = np.argmax(
+    predictions.predictions,
+    axis=-1,
+)
