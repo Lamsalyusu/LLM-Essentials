@@ -390,3 +390,26 @@ optimizer = AdamW(
 # AdamW does not simply add weight decay into the gradient calculation in the same way as traditional Adam implementations. It decouples the weight-decay update from the adaptive gradient update.
 
 # For Transformer fine-tuning, AdamW is a common default optimizer.
+
+# 11. Learning-rate scheduler
+
+# The optimizer’s learning rate does not necessarily remain constant throughout training.
+
+# A learning-rate scheduler changes the learning rate over time.
+
+# The chapter uses a linear decay scheduler.
+
+# Why do we need the number of training steps?
+
+# The scheduler needs to know how many optimizer updates will happen.
+
+# The chapter calculates:
+
+num_epochs = 3
+num_training_steps = num_epochs * len(train_dataloader)
+
+# For example:
+
+# 3 epochs × 459 batches per epoch = 1377 steps
+
+# The exact number depends on the dataset size and batch size.
