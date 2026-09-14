@@ -78,7 +78,7 @@ def tokenize_function(example):
         truncation=True,
     )
 
-apply it to every collaborator 
+# apply it to every collaborator 
 tokenized_datasets = raw_datasets.map(
     tokenize_function,
     batched=True,
@@ -98,3 +98,86 @@ data_collator = DataCollatorWithPadding(
 # input_ids
 # token_type_ids
 # attention_mask
+
+# 3. Postprocessing the tokenized dataset
+
+# When using Trainer, some dataset preparation is performed automatically.
+
+# With a manual loop, you must do it yourself.
+
+# The chapter performs three operations:
+
+# Remove columns the model does not expect.
+
+# Rename label to labels.
+
+# Convert returned values into PyTorch tensors.
+
+# 3.1 Remove unnecessary columns
+
+tokenized_datasets = tokenized_datasets.remove_columns(
+    ["sentence1", "sentence2", "idx"]
+)
+
+# Why remove them?
+
+# Because the model expects numerical inputs such as:
+
+# input_ids
+# attention_mask
+# token_type_ids
+# labels
+
+# It does not expect raw strings such as:
+
+# sentence1
+# sentence2
+
+# If these string columns remain, the data collator or DataLoader may have trouble creating tensors.
+
+# 3.2 Rename label to labels
+tokenized_datasets = tokenized_datasets.rename_column(
+    "label",
+    "labels",
+)
+
+# This is important because Hugging Face models generally expect the argument name:
+
+# labels=...
+
+# For example:
+
+outputs = model(
+    input_ids=input_ids,
+    attention_mask=attention_mask,
+    labels=labels,
+)
+
+# If the field remains named label, then this will not automatically match the model’s expected labels argument.
+
+# 3.3 Set the dataset format to PyTorch
+tokenized_datasets.set_format("torch")
+
+# Before this, values may be returned as Python lists.
+# After this, they are returned as PyTorch tensors.
+
+# For example:
+
+# Before:
+# input_ids → Python list
+
+# After:
+# input_ids → torch.Tensor
+
+# You can inspect the final columns:
+
+print(tokenized_datasets["train"].column_names)
+
+# Expected output:
+
+[
+    "attention_mask",
+    "input_ids",
+    "labels",
+    "token_type_ids",
+]
