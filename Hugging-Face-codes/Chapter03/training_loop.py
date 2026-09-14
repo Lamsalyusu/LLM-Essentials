@@ -258,3 +258,87 @@ print({
 # Training data is shuffled.
 
 # Dynamic padding pads to the longest sequence in that particular batch.
+
+# 6. Loading the model
+
+# Load the sequence-classification model:
+
+from transformers import AutoModelForSequenceClassification
+
+model = AutoModelForSequenceClassification.from_pretrained(
+    checkpoint,
+    num_labels=2,
+)
+
+# Here:
+
+checkpoint = "bert-base-uncased"
+
+# The model is BERT with a classification head.
+
+# For MRPC:
+
+# label 0 → not equivalent
+# label 1 → equivalent
+
+# Therefore:
+
+num_labels=2
+
+# is appropriate.
+
+
+7. Passing a batch through the model
+
+# Before writing the training loop, test one batch:
+
+outputs = model(**batch)
+
+# The **batch syntax expands the dictionary.
+
+# This:
+
+outputs = model(**batch)
+
+# is equivalent to something conceptually like:
+
+outputs = model(
+    input_ids=batch["input_ids"],
+    attention_mask=batch["attention_mask"],
+    token_type_ids=batch["token_type_ids"],
+    labels=batch["labels"],
+)
+
+# Print the loss and logits shape:
+
+print(outputs.loss)
+print(outputs.logits.shape)
+
+# Example:
+tensor(0.5441, grad_fn=<NllLossBackward>)
+torch.Size([8, 2])
+
+# Why does the model return a loss?
+
+# Because the batch contains:
+
+# labels
+
+# When labels are provided, Hugging Face models calculate the appropriate loss automatically.
+
+# For sequence classification, the model generally uses cross-entropy loss.
+
+# Why are logits shaped [8, 2]?
+
+# There are:
+
+# 8 examples
+# 2 class scores per example
+
+# For example:
+
+# Example 1 → [score_for_class_0, score_for_class_1]
+# Example 2 → [score_for_class_0, score_for_class_1]
+# ...
+
+# The logits are raw scores, not probabilities.
