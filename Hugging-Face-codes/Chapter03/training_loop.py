@@ -413,3 +413,62 @@ num_training_steps = num_epochs * len(train_dataloader)
 # 3 epochs × 459 batches per epoch = 1377 steps
 
 # The exact number depends on the dataset size and batch size.
+
+# Creating the scheduler
+from transformers import get_scheduler
+
+num_epochs = 3
+
+num_training_steps = (
+    num_epochs * len(train_dataloader)
+)
+
+lr_scheduler = get_scheduler(
+    "linear",
+    optimizer=optimizer,
+    num_warmup_steps=0,
+    num_training_steps=num_training_steps,
+)
+
+# Print the number of steps:
+
+print(num_training_steps)
+
+# Example:
+
+1377
+# What does "linear" mean?
+
+# The learning rate starts at the initial value:
+
+5e-5
+
+# and gradually decreases toward:
+
+# 0
+
+# over the total training steps.
+
+# Conceptually:
+
+# Learning rate
+# 5e-5 |\
+#      | \
+#      |  \
+#      |   \
+#      |    \
+#   0  |_____\
+#        steps
+# Warmup
+
+# The code uses:
+
+# num_warmup_steps=0
+
+# Warmup means starting with a small learning rate and gradually increasing it to the target learning rate during the first few steps.
+
+# For larger models, warmup is often useful:
+
+# num_warmup_steps=100
+
+# The exact number depends on the task and training setup.
