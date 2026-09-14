@@ -472,3 +472,16 @@ print(num_training_steps)
 # num_warmup_steps=100
 
 # The exact number depends on the task and training setup.
+
+
+# 13. Progress bar
+
+# The chapter uses tqdm to display training progress.
+
+from tqdm.auto import tqdm
+
+progress_bar = tqdm(
+    range(num_training_steps)
+)
+
+# This creates a progress bar with one
