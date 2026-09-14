@@ -231,3 +231,30 @@ collate_fn=data_collator
 # Creates tensors with compatible shapes.
 # Without the collator, sequences with different lengths may not form a rectangular tensor.
 
+# 5 Inspecting one batch 
+# Before training always verify that the batch looks correct 
+for batch in train_dataloader:
+    break
+
+# this retrieves the first batch and stops the loop immediately 
+# Now inspect its shapes:
+
+print({
+    key: value.shape
+    for key, value in batch.items()
+})
+
+# Example output:
+
+{
+    "attention_mask": torch.Size([8, 65]),
+    "input_ids": torch.Size([8, 65]),
+    "labels": torch.Size([8]),
+    "token_type_ids": torch.Size([8, 65]),
+}
+
+# The exact sequence length may differ because:
+
+# Training data is shuffled.
+
+# Dynamic padding pads to the longest sequence in that particular batch.
