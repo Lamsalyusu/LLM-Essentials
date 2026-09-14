@@ -288,7 +288,7 @@ num_labels=2
 # is appropriate.
 
 
-7. Passing a batch through the model
+# 7.Passing a batch through the model 
 
 # Before writing the training loop, test one batch:
 
@@ -315,7 +315,7 @@ print(outputs.loss)
 print(outputs.logits.shape)
 
 # Example:
-tensor(0.5441, grad_fn=<NllLossBackward>)
+# tensor(0.5441, grad=<NllLossBackward>)
 torch.Size([8, 2])
 
 # Why does the model return a loss?
@@ -342,3 +342,51 @@ torch.Size([8, 2])
 # ...
 
 # The logits are raw scores, not probabilities.
+
+# 8. Optimizers 
+# The optimizers updates model parameters using their gradients 
+# The chapter uses AdamW
+from torch.optim import AdamW
+optimizer = AdamW(
+    model.parameters(),
+    lr=5e-5,
+)
+
+# What does model.parameters() mean?
+# It gives the optimizer access to the model’s trainable parameters.
+# The optimizer uses their gradients to update them.
+
+
+# 9. Adam vs AdamW
+
+# The chapter explains that AdamW is similar to Adam but handles weight decay differently.
+
+# Adam
+
+# Adam combines:
+
+# Momentum-like first-moment tracking.
+
+# Second-moment tracking.
+
+# Adaptive learning rates for each parameter.
+
+# AdamW
+
+# AdamW adds decoupled weight decay regularization.
+
+# Weight decay discourages excessively large weights and can improve generalization.
+
+# Example:
+
+optimizer = AdamW(
+    model.parameters(),
+    lr=5e-5,
+    weight_decay=0.01,
+)
+
+# The important distinction is:
+
+# AdamW does not simply add weight decay into the gradient calculation in the same way as traditional Adam implementations. It decouples the weight-decay update from the adaptive gradient update.
+
+# For Transformer fine-tuning, AdamW is a common default optimizer.
