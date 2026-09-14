@@ -181,3 +181,53 @@ print(tokenized_datasets["train"].column_names)
     "labels",
     "token_type_ids",
 ]
+
+# 4. Creating DataLoaders
+
+# A DataLoader creates batches from a dataset.
+
+# Import it:
+from torch.utils.data import DataLoader
+
+# Create the training DataLoader:
+train_dataloader = DataLoader(
+    tokenized_datasets["train"],
+    shuffle=True,
+    batch_size=8, 
+    collate_fn=data_collator,
+)
+
+# Create the evaluation DataLoader:
+
+eval_dataloader = DataLoader(
+    tokenized_datasets["validation"],
+    batch_size=8,
+    collate_fn=data_collator,
+)
+
+# Meaning of each argument
+tokenized_datasets["train"]
+
+# The dataset used for training.
+
+shuffle=True
+# Randomizes the training examples at the beginning of each epoch.
+# Why?
+# Because always presenting examples in the same order may make training less effective or introduce unwanted ordering patterns.
+# For evaluation, shuffling is usually unnecessary:
+
+shuffle=False
+
+# The default is already False, so the evaluation DataLoader does not need it.
+
+batch_size=8
+# The model processes 8 examples per batch.
+
+collate_fn=data_collator
+# The data collator:
+# Collects individual examples into a batch.
+# Dynamically pads sequences.
+
+# Creates tensors with compatible shapes.
+# Without the collator, sequences with different lengths may not form a rectangular tensor.
+
