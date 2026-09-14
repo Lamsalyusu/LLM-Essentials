@@ -1,0 +1,320 @@
+learning curve is a graph showing how a model's performance change during training
+two main curves are:
+Loss Curve 
+Accuracy Curve 
+
+they can be plotted against:
+Training steps
+epochs
+
+x-axis: training steps
+y-axis: loss or accuracy
+
+Example:
+
+True label: 1
+
+Prediction A: 0.30
+Prediction B: 0.45
+Prediction C: 0.60
+
+The loss may improve from A to B to C.
+
+But accuracy is:
+
+0.30 → incorrect
+0.45 → incorrect
+0.60 → correct
+
+So accuracy remains flat and then suddenly increases.
+
+5. Training loss vs validation loss
+
+You should usually monitor two separate losses:
+
+Training loss
+Validation loss
+Training loss
+
+Calculated on examples used to update the model.
+
+Validation loss
+
+Calculated on separate examples that are not used to update the model.
+
+The validation set helps estimate how well the model generalizes to unseen data.
+
+A healthy training run usually shows:
+
+Training loss      ↓
+Validation loss    ↓
+
+with a relatively small gap between them.
+
+6. Healthy learning curves
+
+A healthy training run generally has:
+
+Training loss decreasing.
+
+Validation loss decreasing.
+
+Training accuracy increasing.
+
+Validation accuracy increasing.
+
+A small gap between training and validation performance.
+
+Curves eventually becoming stable
+
+
+12. Solutions for overfitting
+12.1 Regularization
+
+Regularization discourages the model from relying too heavily on specific training examples.
+
+Common methods include:
+
+Dropout.
+
+Weight decay.
+
+Other regularization techniques.
+
+
+Early stopping
+
+Early stopping means stopping training when validation performance stops improving.
+
+This prevents the model from continuing into an overfitting stage.
+
+
+Meaning of early_stopping_patience=3
+
+The model can tolerate three evaluation rounds without improvement.
+
+If validation performance does not improve for three consecutive evaluations, training stops.
+
+Important requirements
+
+Early stopping needs:
+
+An evaluation dataset.
+
+Regular evaluation.
+
+Checkpoint saving.
+
+load_best_model_at_end=True.
+
+A metric selected through metric_for_best_model.
+
+12.3 Data augmentation
+
+Data augmentation increases the diversity of training examples.
+
+For text, this could involve carefully designed transformations such as:
+
+Paraphrasing.
+
+Back translation.
+
+Synonym replacement, when appropriate.
+
+Generating additional valid examples.
+
+The goal is to reduce memorization and improve generalization.
+
+12.4 Reduce model complexity
+
+You can use:
+
+A smaller model.
+
+Fewer trainable parameters.
+
+Fewer layers.
+
+Parameter-efficient fine-tuning.
+
+For example, LoRA can reduce the number of trainable parameters compared with full fine-tuning.
+
+However, PEFT does not automatically prevent all overfitting. Adapter rank, dropout, learning rate, dataset size, and training duration still matter.
+
+3. Underfitting
+Definition
+
+Underfitting happens when the model fails to learn the underlying patterns of the task.
+
+The model is not learning enough, even on the training data.
+
+13.1 Symptoms of underfitting
+
+Training loss remains high.
+
+Validation loss also remains high.
+
+Training accuracy is lower than expected.
+
+Validation accuracy is also poor.
+
+Performance plateaus early.
+
+The model has not learned enough useful patterns.
+
+Example:
+
+Training accuracy:   65%
+Validation accuracy: 63%
+
+Both are poor, and there is no large train-validation gap.
+
+That is more consistent with underfitting than overfitting.
+
+13.2 Causes of underfitting
+
+The course identifies several possible causes:
+
+The model is too small.
+
+The model lacks sufficient capacity.
+
+The learning rate is too low.
+
+The dataset is too small.
+
+The dataset does not represent the task well.
+
+The model is excessively regularized.
+
+The model has not trained for enough epochs.
+
+The data was not correctly preprocessed.
+
+======================================================================================
+
+14. Solutions for underfitting
+14.1 Increase model capacity
+
+Use:
+
+A larger pretrained model.
+
+A model with more parameters.
+
+A more suitable architecture.
+
+However, larger models also require more memory and computation.
+
+14.2 Train longer
+
+Increase the number of epochs:
+
+training_args = TrainingArguments(
+    output_dir="./results",
+    num_train_epochs=10,
+)
+
+The course illustrates changing the number of epochs from 5 to 10.
+
+But do not increase epochs blindly. Continue monitoring validation performance to avoid overfitting.
+
+14.3 Adjust the learning rate
+
+If the learning rate is too low, the model may learn very slowly.
+
+Try a larger learning rate carefully:
+
+training_args = TrainingArguments(
+    output_dir="./results",
+    learning_rate=5e-5,
+)
+
+The correct value depends on:
+
+Model size.
+
+Dataset size.
+
+Task.
+
+Batch size.
+
+Full fine-tuning vs LoRA.
+
+Number of epochs.
+
+14.4 Check data quality
+
+Inspect:
+
+Incorrect labels.
+
+Empty examples.
+
+Poor tokenization.
+
+Excessive truncation.
+
+Incorrect sentence-pair formatting.
+
+Class imbalance.
+
+Training and validation distribution differences.
+
+Bad preprocessing can make a capable model appear to underfit.
+
+
+15. Erratic learning curves
+
+Erratic curves fluctuate heavily instead of showing a clear trend.
+
+Example:
+
+Loss
+ |
+ |\/\_/\/\__/\/\
+ |
+ +----------------
+
+The model may be learning, but the updates are unstable.
+
+15.1 Causes
+
+The course identifies these possible causes:
+
+Learning rate too high
+
+The optimizer takes steps that are too large and may repeatedly overshoot good parameter values.
+
+Batch size too small
+
+Small batches produce noisier gradient estimates.
+
+Poor regularization
+
+The model may react too strongly to individual training examples.
+
+Poor preprocessing
+
+The dataset may contain:
+
+Noisy examples.
+
+Inconsistent formatting.
+
+Incorrect labels.
+
+Unexpected input lengths.
+
+15.2 Symptoms
+
+Frequent loss fluctuations.
+
+High variance.
+
+Accuracy moving unpredictably.
+
+Performance oscillating without a clear trend.
+
+Sudden spikes or drops.
