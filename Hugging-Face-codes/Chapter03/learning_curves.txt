@@ -318,3 +318,47 @@ Accuracy moving unpredictably.
 Performance oscillating without a clear trend.
 
 Sudden spikes or drops.
+
+
+
+Learning curves:
+    Graphs showing model performance during training
+
+Loss:
+    Measures prediction error
+    Usually should decrease
+
+Accuracy:
+    Measures correct predictions
+    Usually should increase
+    Often changes in steps
+
+Convergence:
+    Loss and performance become stable
+
+Healthy training:
+    Train loss decreases
+    Validation loss decreases
+    Train and validation performance are close
+
+Overfitting:
+    Train loss decreases
+    Validation loss increases or stops improving
+    Train performance much better than validation
+
+Underfitting:
+    Train and validation performance are both poor
+    Both may plateau early
+
+Erratic curves:
+    Large fluctuations and instability
+    Often caused by high learning rate or noisy gradients
+
+Early stopping:
+    Stops training when validation performance stops improving
+
+Regularization:
+    Reduces overfitting
+
+W&B:
+    Tracks and visualizes training experiments
