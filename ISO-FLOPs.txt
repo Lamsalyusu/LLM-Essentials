@@ -29,3 +29,159 @@ Step 7 — Increase compute and repeat
 Try a larger budget, such as C=6,000, and repeat the experiment.
 
 That repeated process is what people mean when they talk about the IsoFLOPs cycle.
+
+
+===========================================================================================================================
+
+A very simple IsoFLOPs example
+
+Suppose we have 600 compute units.
+
+We try three different models.
+
+Experiment A
+
+Small model
+
+Parameters
+
+10
+
+Training tokens
+
+10
+
+Compute
+
+6 × 10 × 10 = 600
+
+Experiment B
+
+Medium model
+
+Parameters
+
+20
+
+Training tokens
+
+5
+
+Compute
+
+6 × 20 × 5 = 600
+
+Experiment C
+
+Large model
+
+Parameters
+
+30
+
+Training tokens
+
+3.33
+
+Compute
+
+6 × 30 × 3.33 ≈ 600
+
+===================
+
+All three experiments use approximately the same compute.
+
+But they have different:
+
+Model sizes
+
+Training-token counts
+
+Final losses
+
+Now we train them.
+
+Experiment
+
+	
+
+Model size
+
+	
+
+Training tokens
+
+	
+
+Final loss
+
+
+
+
+A
+
+	
+
+10
+
+	
+
+10
+
+	
+
+2.8
+
+
+
+
+B
+
+	
+
+20
+
+	
+
+5
+
+	
+
+2.4
+
+
+
+
+C
+
+	
+
+30
+
+	
+
+3.33
+
+	
+
+2.6
+
+These loss values are illustrative.
+
+What do we conclude?
+
+Experiment B has the lowest loss.
+
+So, for this compute budget:
+
+The medium model trained on 5 tokens was the best balance among the tested options.
+
+Notice what we did not conclude:
+
+We did not say the largest model is always best.
+
+We did not say the smallest model is always best.
+
+We did not say more tokens are always best.
+
+We found the best balance for this fixed compute budget.
