@@ -185,3 +185,76 @@ We did not say the smallest model is always best.
 We did not say more tokens are always best.
 
 We found the best balance for this fixed compute budget.
+
+
+==============================================================================================================
+
+The key equation
+
+A simplified estimate for Transformer training compute is:
+
+C≈6ND
+
+Where:
+
+Symbol
+
+	
+
+Meaning
+
+
+
+
+C
+
+	
+
+Total training compute
+
+
+
+
+N
+
+	
+
+Number of model parameters
+
+
+
+
+D
+
+	
+
+Number of training tokens
+
+
+
+
+6
+
+	
+
+Approximate constant for a standard dense Transformer training estimate
+
+Important: This is an approximation used for scaling-law reasoning, not an exact compute count for every architecture.
+
+Now look at what happens if we keep C fixed.
+
+Suppose:
+
+C=600
+
+Then:
+
+6ND=600
+
+So:
+
+ND=100
+
+That means:
+
+If the model gets bigger, the number of training tokens must decrease to keep compute the same.
