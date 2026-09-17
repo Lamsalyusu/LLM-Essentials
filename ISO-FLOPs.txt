@@ -1,0 +1,31 @@
+The full IsoFLOPs cycle
+
+Step 1 — Fix compute
+
+Choose a budget, for example C=600.
+
+Step 2 — Choose model sizes
+
+Try small, medium, and large models.
+
+Step 3 — Calculate token budgets
+
+Use the fixed-compute constraint to determine how many tokens each model can process.
+
+Step 4 — Train the models
+
+Train each model using its assigned token budget.
+
+Step 5 — Measure loss
+
+Compare the final validation loss of each model.
+
+Step 6 — Find the best point
+
+The lowest-loss model is the compute-optimal choice for that budget.
+
+Step 7 — Increase compute and repeat
+
+Try a larger budget, such as C=6,000, and repeat the experiment.
+
+That repeated process is what people mean when they talk about the IsoFLOPs cycle.
