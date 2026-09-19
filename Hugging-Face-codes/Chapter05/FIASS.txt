@@ -205,3 +205,33 @@ Document 3:
 "save_to_disk()..."
 
 That's retrieval.
+
+==============================================================================================
+This is where this chapter connects directly to RAG.
+
+You could add:
+
+                 USER
+                  │
+                  ▼
+             Question
+                  │
+                  ▼
+           Embedding model
+                  │
+                  ▼
+           Vector database
+                  │
+              top-k docs
+                  │
+                  ▼
+          ┌───────────────┐
+          │      LLM      │
+          └───────────────┘
+                  │
+                  ▼
+              Answer
+
+This is the basic idea behind Retrieval-Augmented Generation.
+
+The Hugging Face page itself focuses on the retrieval/semantic-search side rather than building the complete RAG pipeline.
