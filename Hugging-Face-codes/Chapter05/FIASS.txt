@@ -235,3 +235,62 @@ You could add:
 This is the basic idea behind Retrieval-Augmented Generation.
 
 The Hugging Face page itself focuses on the retrieval/semantic-search side rather than building the complete RAG pipeline.
+
+==================================================================================================================================
+
+Let's forget Hugging Face's GitHub issues for a moment.
+
+Imagine you have:
+
+documents = [
+    "Python is a programming language.",
+    "Transformers use self-attention.",
+    "PostgreSQL is a relational database.",
+    "PyTorch is a deep learning framework."
+]
+Step 1 — Embed every document
+Document 1 → [ ...768 numbers... ]
+Document 2 → [ ...768 numbers... ]
+Document 3 → [ ...768 numbers... ]
+Document 4 → [ ...768 numbers... ]
+Step 2 — Build FAISS index
+vectors
+   ↓
+FAISS
+Step 3 — User asks
+"What is used to build neural networks?"
+Step 4 — Embed question
+question
+   ↓
+[ ...768 numbers... ]
+Step 5 — Search
+
+FAISS compares the query vector against the indexed vectors.
+
+Step 6 — Results
+
+Maybe:
+
+1. PyTorch is a deep learning framework.
+2. Transformers use self-attention.
+3. Python is a programming language.
+Step 7 — Optional LLM
+
+Now give those retrieved documents to an LLM:
+
+Context:
+"PyTorch is a deep learning framework."
+
+Question:
+"What is used to build neural networks?"
+
+LLM:
+"PyTorch is commonly used..."
+
+That's:
+
+Semantic Search
+       +
+     LLM
+       =
+      RAG
