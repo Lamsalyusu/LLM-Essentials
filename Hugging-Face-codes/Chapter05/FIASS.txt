@@ -1,0 +1,175 @@
+Documents
+   ↓
+Clean / prepare
+   ↓
+Embedding model
+   ↓
+Text → vectors
+   ↓
+FAISS index
+   ↓
+User query → vector
+   ↓
+Similarity search
+   ↓
+Top-k relevant documents
+
+Imagine we have 100000 documents 
+Document 1: "How do I load a dataset without internet?"
+Document 2: "The dataset builder cannot connect..."
+Document 3: "How do I fine-tune BERT?"
+Document 4: "How can I use datasets offline?"
+...
+now the users asks "How can i load a dataset  offline?"
+-> traditional keyword search might look for:
+"load"
+"dataset"
+"offline"
+
+But semantic search asks:
+Which documents have a similar meaning to my question?
+
+So this could match:
+
+Query:
+"How can I load a dataset offline?"
+        ↓
+Document:
+"You can now use datasets without an internet connection."
+
+even if the exact words aren't identical.
+
+That's the central idea of this entire section
+
+=====================================================================================
+Key word search vs Semantic search
+Traditional keyword search
+Suppose:
+
+Query:
+"How can I load a dataset offline?"
+
+A keyword engine might essentially care about:
+load
+dataset
+offline
+
+It can struggle with:
+"Can I use Hugging Face datasets without an internet connection?"
+
+because the wording is different.
+
+--------------------------------------------------------------------------------------
+Semantic search
+
+Instead, we convert language into vectors.
+For example, conceptually:
+
+"How can I load a dataset offline?"
+                ↓
+          [0.12, -0.42, 0.83, ...]
+
+and:
+"Can I use datasets without an internet connection?"
+                ↓
+          [0.10, -0.39, 0.81, ...]
+
+Those vectors should be relatively close because the sentences have similar meanings.
+That's why semantic search can retrieve relevant text even when the wording differs.
+
+
+   ↓
+question embedding
+   ↓
+768-dimensional vector
+
+The course does:
+
+question_embedding = get_embeddings(
+    [question]
+).cpu().detach().numpy()
+
+Now:
+
+query = [768 numbers]
+
+Just like the documents.
+
+The course uses:
+
+scores, samples = embeddings_dataset.get_nearest_examples(
+    "embeddings",
+    question_embedding,
+    k=5
+)
+
+k=5 means:
+
+Give me the five most similar documents.
+
+Conceptually:
+
+                  Query
+                    │
+                    ▼
+             [768-dimensional]
+                    │
+                    ▼
+              FAISS index
+                    │
+       ┌────────────┼────────────┐
+       ▼            ▼            ▼
+    Document A   Document B   Document C
+     score 25     score 24      score 20
+
+The result contains:
+
+scores
+samples
+
+where:
+
+scores → similarity scores
+samples → corresponding documents
+
+The course then puts them into a Pandas DataFrame and sorts by score.
+
+What does the similarity score mean?
+
+This is important.
+
+The model maps:
+
+query
+
+and:
+
+documents
+
+into the same vector space.
+
+Then we ask:
+
+How similar are these vectors?
+
+For this particular model/index setup, the course uses dot-product similarity.
+
+Conceptually:
+
+similar meaning
+      ↓
+vectors point more similarly
+      ↓
+higher similarity
+      ↓
+higher retrieval score
+
+The exact numeric score itself isn't something you should interpret like:
+
+25 = 25% relevant
+
+It isn't a percentage.
+
+It's a similarity value used to rank results.
+
+The course's example returns scores around 25 for its strongest matches.
