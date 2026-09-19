@@ -173,3 +173,35 @@ It isn't a percentage.
 It's a similarity value used to rank results.
 
 The course's example returns scores around 25 for its strongest matches.
+
+======================================================================================
+This distinction is extremely important.
+
+Suppose I ask:
+
+"How can I load a dataset offline?"
+
+Semantic search does not necessarily generate an answer.
+
+It does:
+
+Question
+   ↓
+embedding
+   ↓
+search
+   ↓
+relevant documents
+
+So the output might be:
+
+Document 1:
+"You can use datasets with local files..."
+
+Document 2:
+"The local dataset builders..."
+
+Document 3:
+"save_to_disk()..."
+
+That's retrieval.
