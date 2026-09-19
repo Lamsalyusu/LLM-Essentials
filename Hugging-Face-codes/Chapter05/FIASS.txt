@@ -337,3 +337,34 @@ Semantic Search
              │
              ▼
           ANSWER
+======================================================================================================================
+
+Semantic search
+
+Search based on meaning, not merely matching words.
+
+Embedding
+
+Convert text into a numerical vector representing its semantic information.
+
+Pooling
+
+Convert multiple token-level representations into a single representation for the whole text.
+
+Similarity
+
+Compare query and document vectors to determine which are semantically closer.
+
+FAISS
+
+Efficient library/indexing system for searching large collections of vectors.
+
+Nearest neighbor
+
+Find the vectors closest to the query vector.
+
+k
+k=5
+
+means:
+Return the 5 nearest results.
