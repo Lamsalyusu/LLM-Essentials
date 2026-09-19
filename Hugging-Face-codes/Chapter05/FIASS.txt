@@ -294,3 +294,46 @@ Semantic Search
      LLM
        =
       RAG
+
+====================================================================================================================
+
+                  CORPUS
+                    │
+                    ▼
+              Clean documents
+                    │
+                    ▼
+              Embedding model
+                    │
+                    ▼
+             Document vectors
+                    │
+                    ▼
+               FAISS index
+                    │
+                    │
+             ┌──────┘
+             │
+             ▼
+         USER QUERY
+             │
+             ▼
+       Embedding model
+             │
+             ▼
+        Query vector
+             │
+             ▼
+        FAISS search
+             │
+             ▼
+        Top-k documents
+             │
+             ▼
+       Relevant context
+             │
+             ▼
+       Optional LLM
+             │
+             ▼
+          ANSWER
