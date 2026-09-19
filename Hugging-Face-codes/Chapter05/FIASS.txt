@@ -368,3 +368,68 @@ k=5
 
 means:
 Return the 5 nearest results.
+
+==============================================================================================================
+
+Think of document pooling as:
+
+Taking all the token vectors produced by the Transformer and combining them into ONE vector that represents the whole document/sentence.
+
+Simple example
+
+Suppose:
+
+"I love pizza"
+
+After the Transformer, imagine we get 3 token vectors:
+
+"I"      → [1, 2]
+"love"   → [3, 4]
+"pizza"  → [5, 6]
+
+We need one vector for the whole sentence.
+
+With mean pooling, we average each dimension:
+
+([1,2] + [3,4] + [5,6]) / 3
+
+= [3, 4]
+
+So:
+
+"I love pizza"
+      ↓
+Transformer
+      ↓
+[1,2] [3,4] [5,6]
+      ↓
+   pooling
+      ↓
+    [3,4]
+
+[3,4] is now the document/sentence embedding.
+
+In the Hugging Face chapter
+
+They use CLS pooling instead:
+
+[CLS] → [0.2, 0.8, 0.1, ...]
+"I"   → [...]
+"love"→ [...]
+"pizza"→ [...]
+
+They simply take the [CLS] vector:
+
+embedding = model_output.last_hidden_state[:, 0]
+
+So:
+
+Many token vectors
+       ↓
+    pooling
+       ↓
+ONE document vector
+       ↓
+FAISS uses this vector for similarity search
+
+That's all document pooling means: turning many token representations → one representation for the entire text.
