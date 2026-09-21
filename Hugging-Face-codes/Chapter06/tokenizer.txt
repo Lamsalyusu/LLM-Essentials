@@ -102,3 +102,53 @@ next 1000
 ...
 
 The course therefore creates an iterator that gives the tokenizer batches of text
+
+=============================================================================================================================================================
+
+Why use a generator?
+
+This is another important Python concept from the page.
+
+Bad approach for a huge dataset:
+
+training_corpus = [
+    ...
+]
+
+Because you're potentially loading everything into memory.
+
+Instead:
+
+def get_training_corpus():
+    ...
+    yield samples["whole_func_string"]
+
+yield lets Python produce data when it is needed.
+
+Think:
+
+Normal list
+
+RAM:
+[everything]
+[everything]
+[everything]
+[everything]
+
+
+Generator
+
+RAM:
+[current batch]
+      ↓
+process
+      ↓
+next batch
+      ↓
+process
+
+So generators are useful for large corpora.
+
+The HF example processes batches of 1,000 texts at a time.
+
+
