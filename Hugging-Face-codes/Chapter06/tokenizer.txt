@@ -152,3 +152,47 @@ So generators are useful for large corpora.
 The HF example processes batches of 1,000 texts at a time.
 
 
+Training a new tokenizer
+Tokenizer training ≠ model training
+Model training → learns neural-network weights using optimization.
+Tokenizer training → statistically learns useful tokens/vocabulary from a corpus.
+Same corpus + same algorithm → deterministic tokenizer training.
+
+Corpus
+Collection of text used to train the tokenizer.
+Should represent the target language/domain/data.
+
+Why train a new tokenizer?
+Existing tokenizer may tokenize your domain inefficiently.
+A domain-specific tokenizer can learn frequently occurring patterns.
+Example: Python tokenizer can learn indentation and Python-specific patterns.
+
+Training from an old tokenizer
+Start with an existing tokenizer such as GPT-2.
+Keep its tokenizer characteristics/configuration and special tokens.
+Learn a new vocabulary from your corpus.
+
+train_new_from_iterator()
+Main HF API used in this section.
+Takes an iterator of text batches and target vocabulary size.
+
+Generator
+Avoids loading the entire corpus into RAM.
+Provides batches only when needed.
+yield is used to create a generator.
+
+Fast tokenizer
+Implemented using the Hugging Face Tokenizers library.
+Rust-backed for high performance.
+train_new_from_iterator() requires a fast tokenizer.
+
+Vocabulary
+Collection of tokens the tokenizer knows.
+New tokenizer learns vocabulary appropriate for the training corpus.
+
+Saving
+save_pretrained() saves the tokenizer locally.
+push_to_hub() uploads it to Hugging Face Hub.
+
+Key idea:
+Train tokenizer on representative data so its vocabulary can efficiently represent that data
