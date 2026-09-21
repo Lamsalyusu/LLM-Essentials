@@ -42,3 +42,13 @@ tokenizer.save_pretrained(
 tokenizer = AutoTokenizer.from_pretrained(
     "code-search-net-tokenizer"
 )
+
+# 1. Tokenizer training ≠ model training
+
+# 2. Corpus determines what vocabulary the tokenizer learns
+
+# 3. Existing tokenizer can be adapted to a new corpus
+
+# 4. train_new_from_iterator() trains the new vocabulary
+
+# 5. Fast tokenizers use Rust underneath for speed
