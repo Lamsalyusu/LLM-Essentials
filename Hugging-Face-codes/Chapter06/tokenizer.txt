@@ -76,3 +76,29 @@ train tokenizer
 vocabulary suited to that domain
 
 This is why the HF example trains on Python code when the goal is a code-oriented model.
+
+==========================================================================================================================================================
+
+Why use batches?
+
+Imagine your dataset contains:
+
+10 million documents
+
+You don't want to load all 10 million into RAM.
+
+Instead:
+
+Dataset
+   ↓
+1000 texts
+   ↓
+tokenizer
+   ↓
+1000 texts
+   ↓
+next 1000
+   ↓
+...
+
+The course therefore creates an iterator that gives the tokenizer batches of text
