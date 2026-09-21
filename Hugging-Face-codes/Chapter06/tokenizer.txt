@@ -1,0 +1,31 @@
+MODEL TRAINING
+→ learn neural network parameters
+
+TOKENIZER TRAINING
+→ learn vocabulary/tokenization rules
+
+Think about a tokenizer as learning:
+
+TEXT
+ ↓
+useful pieces
+ ↓
+VOCABULARY
+
+Suppose your corpus is Python code.
+
+The tokenizer might discover that these occur frequently:
+
+def
+class
+return
+self
+torch
+__
+init
+()
+    ← indentation
+
+So instead of splitting everything into tiny pieces, it can create tokens that are useful for that corpus.
+
+That's why a tokenizer trained specifically on Python code can represent Python more efficiently.
