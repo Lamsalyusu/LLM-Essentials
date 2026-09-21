@@ -29,3 +29,50 @@ init
 So instead of splitting everything into tiny pieces, it can create tokens that are useful for that corpus.
 
 That's why a tokenizer trained specifically on Python code can represent Python more efficiently.
+
+
+
+A corpus is simply the collection of text you give to the tokenizer.
+
+In the HF example:
+
+CodeSearchNet
+       ↓
+Python source code
+       ↓
+training corpus
+       ↓
+new tokenizer
+
+They use the whole_func_string column containing complete Python functions.
+
+So:
+
+Corpus = the actual text from which the tokenizer learns its vocabulary.
+
+
+Why does the corpus need to represent your data?
+
+This is a major practical concept.
+
+Imagine you're building an LLM specifically for:
+
+medical documents
+
+but train your tokenizer mostly on:
+
+Twitter conversations
+
+Your tokenizer won't necessarily represent medical terminology efficiently.
+
+Instead:
+
+Your target domain
+       ↓
+representative corpus
+       ↓
+train tokenizer
+       ↓
+vocabulary suited to that domain
+
+This is why the HF example trains on Python code when the goal is a code-oriented model.
