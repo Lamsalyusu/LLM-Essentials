@@ -196,3 +196,44 @@ push_to_hub() uploads it to Hugging Face Hub.
 
 Key idea:
 Train tokenizer on representative data so its vocabulary can efficiently represent that data
+
+
+
+======================================================================================================================================================================
+
+                 EXISTING TOKENIZER
+                        │
+                        │
+                        ▼
+                GPT-2 tokenizer
+                        │
+                        │ keep configuration
+                        │
+                        ▼
+Your corpus ───────→ TRAIN TOKENIZER
+(Python code)             │
+                          │
+                          ▼
+                    New vocabulary
+                          │
+                          ▼
+                  NEW TOKENIZER
+                          │
+                          ▼
+               Better for your data
+
+    -----------------------------------------------------
+
+    YOUR DATA
+    ↓
+    CORPUS
+    ↓
+    TOKENIZER TRAINING
+    ↓
+    LEARN VOCABULARY
+    ↓
+    NEW TOKENIZER
+    ↓
+    TOKENIZE YOUR DATA MORE EFFICIENTLY
+
+    ------------------------------------------------------
