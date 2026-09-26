@@ -76,6 +76,7 @@ output = model(tokens)
 # How many tokens per sentence?
 # How many numbers represent each token?
 
+
 # -------------------------------------------------------------------------------------
 #  "i love playing cricket" 
 # 1 sentence (B), 4 token in this sentence(T), 8 dimensions for each of the words(C) --> (1,4,8)
